@@ -54,4 +54,10 @@ public class UserController {
             return "Invalid Credentials";
         }
     }
+
+    @GetMapping("/info")
+    public String getInfo(){
+        return "Access this method with the help of jwt token";
+    }
+
 }

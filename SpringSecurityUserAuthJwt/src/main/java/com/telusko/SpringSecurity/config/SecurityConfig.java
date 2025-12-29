@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -26,14 +27,18 @@ public class SecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private JwtFilter jwtFilter;
+
     @Bean // This below config makes sure every time a new sessionid is generated(stateless), so we can disable the csrf token usage.
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
         security.csrf(customizer->customizer.disable());
 //        security.authorizeHttpRequests(req->req.anyRequest().authenticated());
         security.authorizeHttpRequests(req->req.requestMatchers("/user/register-user","/user/login","/user/display").permitAll()
-                .anyRequest().authenticated());
+                .anyRequest().authenticated()); // ---> mentioned paths will be accessed without any authorization.
         security.httpBasic(Customizer.withDefaults()); // This enables to use the app from postman tool or others.
-        security.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // This step makes the app stateless.
+        security.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // This step makes the app stateless.
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return security.build();
     }
 

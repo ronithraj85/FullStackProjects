@@ -30,7 +30,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
         security.csrf(customizer->customizer.disable());
 //        security.authorizeHttpRequests(req->req.anyRequest().authenticated());
-        security.authorizeHttpRequests(req->req.requestMatchers("register-user","login").permitAll()
+        security.authorizeHttpRequests(req->req.requestMatchers("/user/register-user","/user/login","/user/display").permitAll()
                 .anyRequest().authenticated());
         security.httpBasic(Customizer.withDefaults()); // This enables to use the app from postman tool or others.
         security.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // This step makes the app stateless.

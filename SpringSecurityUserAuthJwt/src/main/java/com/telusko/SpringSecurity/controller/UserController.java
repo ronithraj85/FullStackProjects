@@ -14,15 +14,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private UserService userService;
+
 
     @Autowired
-    private UserService userService;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtService jwtService;
@@ -52,8 +54,4 @@ public class UserController {
             return "Invalid Credentials";
         }
     }
-
-
-
-
 }

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +17,14 @@ import java.util.List;
 @Tag(name = "Doctors", description = "Manage doctors")
 @RestController
 @RequestMapping("/api/doctors")
-@RequiredArgsConstructor
 public class DoctorController {
 
-    private final DoctorService doctorService;
+    private  final DoctorService doctorService;
+
+    @Autowired
+    public DoctorController(DoctorService doctorService) {
+        this.doctorService = doctorService;
+    }
 
     @Operation(summary = "Create doctor")
     @PreAuthorize("hasRole('ADMIN')") // ---> hasRole checks for ROLE_ADMIN and not ROLE, so roles when saving/register must be saved/registered with ROLE_ADMIN.

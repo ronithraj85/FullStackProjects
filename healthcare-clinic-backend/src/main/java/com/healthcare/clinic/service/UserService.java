@@ -20,12 +20,23 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public String deleteUser(Long id){
+        try {
+            userRepository.deleteById(id);
+            return "Successfully delete the user with id-"+id;
+        }
+        catch(Exception e){
+            return "Failed to delete the user with id-"+id;
+        }
+    }
+
 
     public List<UserResponseDto> getAllUsers() {
         List<User> allUsers = userRepository.findAll();
         return allUsers.stream().map(user->{
             UserResponseDto dto=new UserResponseDto();
                     dto.setEmail(user.getEmail());
+                  dto.setId(user.getId());
             dto.setName(user.getName());
             dto.setUsername(user.getUsername());
             dto.setRoles(
@@ -37,4 +48,7 @@ public class UserService {
         }).collect(Collectors.toList());
 
     }
+
+
+
 }

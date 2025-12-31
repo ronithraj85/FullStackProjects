@@ -5,14 +5,22 @@ import com.healthcare.clinic.entity.Doctor;
 import com.healthcare.clinic.exception.ResourceNotFoundException;
 import com.healthcare.clinic.repository.DoctorRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service @RequiredArgsConstructor
+@Service
+//@RequiredArgsConstructor
 public class DoctorService {
 
-    private final DoctorRepository doctorRepository;
+    private  final DoctorRepository doctorRepository;
+
+    @Autowired
+    public DoctorService(DoctorRepository doctorRepository) {
+        this.doctorRepository = doctorRepository;
+    }
+
 
     public Doctor create(Doctor d) { return doctorRepository.save(d); }
 

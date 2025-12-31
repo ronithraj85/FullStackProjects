@@ -42,10 +42,6 @@ public class AuthController {
         return  new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<UserResponseDto>> getAllUsers(){
-        return new ResponseEntity<>(userService.getAllUsers(),HttpStatus.OK);
-    }
 
 
 }

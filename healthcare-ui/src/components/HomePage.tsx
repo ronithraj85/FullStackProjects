@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UsersTable from "./UsersTable";
 import { AiFillHome } from "react-icons/ai";
+import AddAdminPage from "./AddAdmiPage";
 
 // Utility to decode JWT payload
 function parseJwt(
@@ -50,6 +51,13 @@ const HomePage: React.FC = () => {
           {/* Admin-only options */}
           {roles.includes("ROLE_ADMIN") && (
             <>
+              <button
+                onClick={() => setActiveSection("admin")}
+                className="px-4 py-2 hover:bg-blue-700 rounded text-white"
+              >
+                Add Admin
+              </button>
+
               <button
                 onClick={() => navigate("/doctors/create")}
                 className="hover:bg-blue-700 px-3 py-2 rounded"
@@ -125,6 +133,7 @@ const HomePage: React.FC = () => {
       )}
       {/* 👇 Conditional rendering based on activeSection */}
       {activeSection === "users" && <UsersTable />}
+      {activeSection === "admin" && <AddAdminPage />}
     </div>
   );
 };

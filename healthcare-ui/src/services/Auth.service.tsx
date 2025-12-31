@@ -34,6 +34,8 @@ export const register = async (
   let roles = [{}];
   if (role === "user") {
     roles = [{ name: "ROLE_USER" }];
+  } else {
+    roles = [{ name: "ROLE_ADMIN" }];
   }
   try {
     console.log("Role to be added is=", roles);

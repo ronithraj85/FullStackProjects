@@ -6,6 +6,7 @@ import HomePage from "./components/HomePage";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import UsersTable from "./components/UsersTable";
+import AddAdminPage from "./components/AddAdmiPage";
 
 const App: React.FC = () => {
   return (
@@ -13,6 +14,14 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route
+          path="/admins/create"
+          element={
+            <PrivateRoute>
+              <AddAdminPage />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/home"
           element={

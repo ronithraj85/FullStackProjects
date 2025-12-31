@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public class DoctorController {
     private final DoctorService doctorService;
 
     @Operation(summary = "Create doctor")
+    @PreAuthorize("hasRole('ADMIN')") // ---> hasRole checks for ROLE_ADMIN and not ROLE, so roles when saving/register must be saved/registered with ROLE_ADMIN.
+//    @PreAuthorize("hasAuthority('ADMIN')") --> hasAuthority checks for ROLE no need of saving as ROLE_ADMIN.
     @PostMapping
     public ResponseEntity<Doctor> create(@Valid @RequestBody Doctor d) {
         return ResponseEntity.ok(doctorService.create(d));
@@ -44,7 +47,9 @@ public class DoctorController {
     public ResponseEntity<List<Doctor>> search(@RequestParam(name = "specialization") String specialization) {
         return ResponseEntity.ok(doctorService.searchActiveBySpecialization(specialization));
     }
+
     @Operation(summary = "Delete doctor")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id)
     {

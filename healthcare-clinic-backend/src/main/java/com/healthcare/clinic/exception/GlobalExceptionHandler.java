@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
                 .timestamp(Instant.now())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .error("Internal Server Error")
-                .message("Unexpected error"+ex.getStackTrace())
+                .message("Unexpected error-"+ex.getMessage())
                 .path(req.getDescription(false))
                 .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);

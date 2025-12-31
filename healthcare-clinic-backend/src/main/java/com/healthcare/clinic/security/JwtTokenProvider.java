@@ -3,6 +3,7 @@ package com.healthcare.clinic.security;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Jwts;
 import javax.crypto.KeyGenerator;
@@ -10,6 +11,8 @@ import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenProvider {
@@ -30,6 +33,7 @@ public class JwtTokenProvider {
             throw new RuntimeException("Error in generating the key");
         }
     }
+
     public String generateToken(Authentication authentication){
 
         String username = authentication.getName();
@@ -38,8 +42,14 @@ public class JwtTokenProvider {
 
         Date expireDate = new Date(currentDate.getTime() + 604800000);
 
+        // Extract roles/authorities from Authentication
+        List<String> roles = authentication.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
         String token = Jwts.builder()
                 .subject(username)
+                .claim("roles",roles)
                 .issuedAt(new Date())
                 .expiration(expireDate)
                 .signWith(getKey())

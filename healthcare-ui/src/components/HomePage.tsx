@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UsersTable from "./UsersTable";
+import { AiFillHome } from "react-icons/ai";
 
 // Utility to decode JWT payload
 function parseJwt(
@@ -37,7 +38,15 @@ const HomePage: React.FC = () => {
       {/* Navbar */}
       <nav className="bg-blue-600 text-white px-6 py-4 flex justify-between items-center shadow-md">
         <h1 className="text-xl font-bold">Healthcare System</h1>
-        <div className="space-x-4">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => window.location.reload()}
+            className="flex items-center px-4 py-2 hover:bg-blue-700 rounded text-white h-full"
+          >
+            <AiFillHome className="text-xl" />
+            <span>Home</span>
+          </button>
+
           {/* Admin-only options */}
           {roles.includes("ROLE_ADMIN") && (
             <>

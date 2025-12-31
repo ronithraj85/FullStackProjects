@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,4 +30,18 @@ public class UserController {
     }
 
 
+        // Update user details
+        @PutMapping("/{id}")
+        public ResponseEntity<UserResponseDto> updateUser(
+                @PathVariable("id") Long id,
+                @RequestBody UserResponseDto userResponseDto) {
+
+            UserResponseDto updatedUser = userService.updateUser(
+                    id,
+                    userResponseDto.getName(),
+                    userResponseDto.getUsername(),
+                    userResponseDto.getEmail());
+
+            return ResponseEntity.ok(updatedUser);
+        }
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +31,6 @@ public class UserService {
         }
     }
 
-
     public List<UserResponseDto> getAllUsers() {
         List<User> allUsers = userRepository.findAll();
         return allUsers.stream().map(user->{
@@ -49,6 +49,29 @@ public class UserService {
 
     }
 
+    public UserResponseDto updateUser(Long id, String name, String username, String email) {
+        // Fetch the user entity
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+
+        // Update fields
+        user.setName(name);
+        user.setUsername(username);
+        user.setEmail(email);
+
+        // Save updated entity
+        User savedUser = userRepository.save(user);
+
+        // Convert to DTO
+        return new UserResponseDto(
+                savedUser.getId(),
+                savedUser.getName(),
+                savedUser.getUsername(),
+                savedUser.getEmail(),
+                savedUser.getRoles().stream() .map(Role::getName) // assuming Role has getName()
+                        .collect(Collectors.toSet())// include roles if needed
+        );
+    }
 
 
 }

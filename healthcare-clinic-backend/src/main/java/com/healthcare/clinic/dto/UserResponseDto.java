@@ -2,7 +2,6 @@ package com.healthcare.clinic.dto;
 
 import com.healthcare.clinic.entity.Role;
 import lombok.*;
-
 import java.util.Set;
 
 @Getter
@@ -15,3 +14,5 @@ public class UserResponseDto {
      private String email;
      private Set<String> roles; // only role names
 }
+
+

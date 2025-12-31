@@ -45,19 +45,19 @@ const HomePage: React.FC = () => {
                 onClick={() => navigate("/doctors/create")}
                 className="hover:bg-blue-700 px-3 py-2 rounded"
               >
-                Create Doctor
+                Add Doctor
               </button>
               <button
                 onClick={() => navigate("/doctors/delete")}
                 className="hover:bg-blue-700 px-3 py-2 rounded"
               >
-                Delete Doctor
+                Remove Doctor
               </button>
               <button
                 onClick={() => navigate("/patients/create")}
                 className="hover:bg-blue-700 px-3 py-2 rounded"
               >
-                Create Patient
+                Add Patient
               </button>
               <button
                 onClick={() => setActiveSection("users")}
@@ -65,12 +65,7 @@ const HomePage: React.FC = () => {
               >
                 Manage Users
               </button>
-              {/* <button
-                onClick={() => navigate("/usersList")}
-                className="hover:bg-blue-700 px-3 py-2 rounded"
-              >
-                Get Users
-              </button> */}
+
               <button
                 onClick={() => navigate("/doctors/cancel")}
                 className="hover:bg-blue-700 px-3 py-2 rounded"

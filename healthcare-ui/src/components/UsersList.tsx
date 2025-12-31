@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 
 const UsersList = () => {
-    useEffect(() => {
-      
-  }, []);
+  useEffect(() => {}, []);
 
   return <div></div>;
 };

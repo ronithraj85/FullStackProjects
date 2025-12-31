@@ -20,7 +20,7 @@ const Register: React.FC = () => {
     // TODO: call backend register API
     try {
       await register(newUser, username, email, password, "user");
-      navigate("/login"); // redirect after successful registration
+      navigate("/"); // redirect after successful registration
     } catch {
       console.log("Registration failed. Please try again.");
     }

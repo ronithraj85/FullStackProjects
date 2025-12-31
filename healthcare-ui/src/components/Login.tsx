@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/Auth.service";
 
 const Login: React.FC = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
@@ -12,17 +13,10 @@ const Login: React.FC = () => {
     console.log("Login with:", { usernameOrEmail, password });
     // TODO: call backend login API
     try {
-      const res = await axios.post("http://localhost:8181/api/auth/login", {
-        usernameOrEmail,
-        password,
-      });
-      // Save access token in localStorage
-      localStorage.setItem("accessToken", res.data.accessToken);
-      // Redirect to dashboard
-      navigate("/home");
-    } catch (err) {
-      console.log("Error occured in Login-", err);
-      // setError("Invalid credentials or server error");
+      await login(usernameOrEmail, password);
+      navigate("/home"); // redirect after successful login
+    } catch {
+      console.log("Invalid credentials or server error");
     }
   };
 

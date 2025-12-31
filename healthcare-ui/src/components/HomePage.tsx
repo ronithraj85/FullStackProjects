@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import UsersTable from "./UsersTable";
 
 // Utility to decode JWT payload
 function parseJwt(
@@ -16,6 +17,7 @@ function parseJwt(
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState<string>("");
   const [roles] = useState<string[]>(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
@@ -58,6 +60,24 @@ const HomePage: React.FC = () => {
                 Create Patient
               </button>
               <button
+                onClick={() => setActiveSection("users")}
+                className="hover:bg-blue-700 px-3 py-2 rounded"
+              >
+                Manage Users
+              </button>
+              {/* <button
+                onClick={() => navigate("/usersList")}
+                className="hover:bg-blue-700 px-3 py-2 rounded"
+              >
+                Get Users
+              </button> */}
+              <button
+                onClick={() => navigate("/doctors/cancel")}
+                className="hover:bg-blue-700 px-3 py-2 rounded"
+              >
+                Cancel Appointment
+              </button>
+              <button
                 onClick={() => navigate("/patients/delete")}
                 className="hover:bg-blue-700 px-3 py-2 rounded"
               >
@@ -67,7 +87,8 @@ const HomePage: React.FC = () => {
           )}
 
           {/* User + Admin can schedule appointments */}
-          {(roles.includes("ROLE_USER") || roles.includes("ROLE_ADMIN")) && (
+          {roles.includes("ROLE_USER") && (
+            // || roles.includes("ROLE_ADMIN")
             <button
               onClick={() => navigate("/appointments/schedule")}
               className="hover:bg-blue-700 px-3 py-2 rounded"
@@ -79,7 +100,7 @@ const HomePage: React.FC = () => {
           {/* Logout */}
           <button
             onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-600 px-3 py-2 rounded"
+            className="bg-green-400 hover:bg-green-600 px-3 py-2 rounded"
           >
             Logout
           </button>
@@ -87,15 +108,19 @@ const HomePage: React.FC = () => {
       </nav>
 
       {/* Main Content */}
-      <div className="p-8">
-        <h2 className="text-2xl font-semibold mb-4">
-          Welcome to the Healthcare System
-        </h2>
-        <p className="text-gray-700">
-          Use the navigation bar above to manage doctors, patients, and
-          appointments.
-        </p>
-      </div>
+      {activeSection === "" && (
+        <div className="p-8">
+          <h2 className="text-2xl font-semibold mb-4">
+            Welcome to the Healthcare System
+          </h2>
+          <p className="text-gray-700">
+            Use the navigation bar above to manage doctors, patients, and
+            appointments.
+          </p>
+        </div>
+      )}
+      {/* 👇 Conditional rendering based on activeSection */}
+      {activeSection === "users" && <UsersTable />}
     </div>
   );
 };

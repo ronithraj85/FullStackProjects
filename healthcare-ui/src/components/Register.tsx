@@ -1,20 +1,29 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "../services/Auth.service";
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState("");
+  const [newUser, setNewUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-    console.log("Register with:", { username, email, password });
+    console.log("Register with:", { newUser, username, email, password });
     // TODO: call backend register API
+    try {
+      await register(newUser, username, email, password, "user");
+      navigate("/login"); // redirect after successful registration
+    } catch {
+      console.log("Registration failed. Please try again.");
+    }
   };
 
   return (
@@ -24,6 +33,19 @@ const Register: React.FC = () => {
           Register
         </h2>
         <form onSubmit={handleRegister} className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
+            <input
+              type="text"
+              value={newUser}
+              onChange={(e) => setNewUser(e.target.value)}
+              className="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              placeholder="Enter your name"
+              required
+            />
+          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Username

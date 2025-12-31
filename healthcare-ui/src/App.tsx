@@ -5,6 +5,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import HomePage from "./components/HomePage";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import UsersTable from "./components/UsersTable";
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,14 @@ const App: React.FC = () => {
           element={
             <PrivateRoute>
               <HomePage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <PrivateRoute>
+              <UsersTable />
             </PrivateRoute>
           }
         />

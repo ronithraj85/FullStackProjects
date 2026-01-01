@@ -6,7 +6,7 @@ import HomePage from "./components/HomePage";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import UsersTable from "./components/UsersTable";
-import AddAdminPage from "./components/AddAdmiPage";
+import AddAdminPage from "./components/AddAdminPage";
 
 const App: React.FC = () => {
   return (

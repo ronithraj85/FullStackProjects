@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { deleteUser, getUsers, updateUser } from "../services/Auth.service";
 import type UserResponseDto from "../types/UserResponseDto";
+import AddAdminPage from "./AddAdminPage";
 
 const UsersTable: React.FC = () => {
   const [users, setUsers] = useState<UserResponseDto[]>([]);
@@ -10,6 +11,7 @@ const UsersTable: React.FC = () => {
   const [editMessage, setEditMessage] = useState("");
   const [editingUser, setEditingUser] = useState<UserResponseDto | null>(null);
   const [formData, setFormData] = useState<Partial<UserResponseDto>>({});
+  const [addUser, setAddUser] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -67,7 +69,15 @@ const UsersTable: React.FC = () => {
 
   return (
     <div className="p-8">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">All Users</h2>
+      <div>
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">All Users</h2>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded"
+          onClick={() => setAddUser(true)}
+        >
+          Add new Doctor
+        </button>
+      </div>
       <div className="overflow-x-auto shadow-lg rounded-lg">
         {deleteMessage && (
           <div className="mb-4 p-3 bg-green-200 text-green-800 rounded">
@@ -123,6 +133,7 @@ const UsersTable: React.FC = () => {
             ))}
           </tbody>
         </table>
+        {addUser && <AddAdminPage />}
         {editingUser && (
           <div className="mt-6 p-4 border rounded bg-gray-50">
             <h3 className="text-lg font-semibold mb-4">Edit Existing User</h3>

@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UsersTable from "./UsersTable";
 import { AiFillHome } from "react-icons/ai";
-import AddAdminPage from "./AddAdmiPage";
+import AddAdminPage from "./AddAdminPage";
+import AddDoctorPage from "./Doctor/AddDoctor";
+import DoctorsMain from "./Doctor/DoctorsMain";
 
 // Utility to decode JWT payload
 function parseJwt(
@@ -51,30 +53,24 @@ const HomePage: React.FC = () => {
           {/* Admin-only options */}
           {roles.includes("ROLE_ADMIN") && (
             <>
-              <button
+              {/* <button
                 onClick={() => setActiveSection("admin")}
                 className="px-4 py-2 hover:bg-blue-700 rounded text-white"
               >
                 Add Admin
-              </button>
+              </button> */}
 
               <button
-                onClick={() => navigate("/doctors/create")}
+                onClick={() => setActiveSection("doctors")}
                 className="hover:bg-blue-700 px-3 py-2 rounded"
               >
-                Add Doctor
+                Doctors
               </button>
               <button
-                onClick={() => navigate("/doctors/delete")}
+                onClick={() => setActiveSection("patients")}
                 className="hover:bg-blue-700 px-3 py-2 rounded"
               >
-                Remove Doctor
-              </button>
-              <button
-                onClick={() => navigate("/patients/create")}
-                className="hover:bg-blue-700 px-3 py-2 rounded"
-              >
-                Add Patient
+                Patients
               </button>
               <button
                 onClick={() => setActiveSection("users")}
@@ -82,18 +78,11 @@ const HomePage: React.FC = () => {
               >
                 Manage Users
               </button>
-
               <button
-                onClick={() => navigate("/doctors/cancel")}
+                onClick={() => setActiveSection("appointments")}
                 className="hover:bg-blue-700 px-3 py-2 rounded"
               >
-                Cancel Appointment
-              </button>
-              <button
-                onClick={() => navigate("/patients/delete")}
-                className="hover:bg-blue-700 px-3 py-2 rounded"
-              >
-                Delete Patient
+                Appointments
               </button>
             </>
           )}
@@ -133,7 +122,9 @@ const HomePage: React.FC = () => {
       )}
       {/* 👇 Conditional rendering based on activeSection */}
       {activeSection === "users" && <UsersTable />}
-      {activeSection === "admin" && <AddAdminPage />}
+      {/* {activeSection === "admin" && <AddAdminPage />} */}
+      {activeSection === "doctors" && <DoctorsMain />}
+      {activeSection === "patients" && <DoctorsMain />}
     </div>
   );
 };

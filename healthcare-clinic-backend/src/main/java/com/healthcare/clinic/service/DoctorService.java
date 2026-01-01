@@ -44,5 +44,14 @@ public class DoctorService {
                 .toList();
     }
 
+    public void deleteDoctor(Long id){
+        try {
+            doctorRepository.deleteById(id);
+        }
+        catch(Exception e){
+            System.out.println("Error while deleting the doctor.");
+            throw new RuntimeException(e);
+        }
+    }
 
 }

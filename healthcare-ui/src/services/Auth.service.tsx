@@ -1,12 +1,15 @@
 import axios from "axios";
 import type UserResponseDto from "../types/UserResponseDto";
 import type DoctorResponseDto from "../types/DoctorResponseDto";
+import type { PatientResponseDto } from "../types/PatientResponseDto";
 
 const API_AUTH_URL = "http://localhost:8181/api/auth";
 
 const API_USER_URL = "http://localhost:8181/api/users";
 
 const API_DOCTOR_URL = "http://localhost:8181/api/doctors";
+
+const API_PATIENT_URL = "http://localhost:8181/api/patients";
 
 // Login service
 export const login = async (usernameOrEmail: string, password: string) => {
@@ -35,11 +38,14 @@ export const register = async (
   role: string
 ) => {
   let roles = [{}];
-  if (role === "user") {
+  if (role === "user" || role === "User") {
     roles = [{ name: "ROLE_USER" }];
-  } else {
+  } else if (role === "admin" || role === "Admin") {
     roles = [{ name: "ROLE_ADMIN" }];
+  } else {
+    roles = [{ name: "ROLE_STAFF" }];
   }
+
   try {
     console.log("Role to be added is=", roles);
     const res = await axios.post(`${API_AUTH_URL}/register`, {
@@ -156,6 +162,22 @@ export const deleteDoctor = async (id: number): Promise<void> => {
     });
   } catch (err) {
     console.error("Error occurred while deleting user:", err);
+    throw err;
+  }
+};
+
+// Get all the patients
+export const getPatients = async (): Promise<PatientResponseDto[]> => {
+  try {
+    const res = await axios.get<PatientResponseDto[]>(`${API_PATIENT_URL}/`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+
+    return res.data; // return response data to caller
+  } catch (err) {
+    console.error("Error occurred in fetchPatients:", err);
     throw err;
   }
 };

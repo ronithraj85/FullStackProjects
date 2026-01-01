@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { register } from "../services/Auth.service";
+import { register } from "../../services/Auth.service";
 
 export default function AddAdminPage() {
   const [form, setForm] = useState({
@@ -11,7 +11,7 @@ export default function AddAdminPage() {
   });
   const [adminaddedMessage, setAdminaddedMessage] = useState("");
 
-  const rolesList = ["admin", "user", "facilities"];
+  const rolesList = ["Admin", "User", "Staff"];
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,7 +28,7 @@ export default function AddAdminPage() {
         form.password,
         form.roles
       );
-      setAdminaddedMessage(`User added successfully with role-${form.role}`);
+      setAdminaddedMessage(`User added successfully!`);
       setTimeout(() => {
         setAdminaddedMessage("");
         window.location.reload();
@@ -45,7 +45,7 @@ export default function AddAdminPage() {
           {adminaddedMessage}
         </div>
       )}
-      <h2 className="text-2xl font-bold text-blue-700 mb-6">Add Admin</h2>
+      <h2 className="text-2xl font-bold text-blue-700 mb-6">Add User</h2>
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 w-full max-w-md space-y-4"
@@ -85,7 +85,7 @@ export default function AddAdminPage() {
           className="border border-gray-300 rounded px-4 py-2 w-full"
           required
         />
-        <div>
+        {/* <div>
           <label className="block font-semibold mb-2">Select Role:</label>
           {rolesList.map((roleOption) => (
             <label
@@ -99,14 +99,43 @@ export default function AddAdminPage() {
                 checked={form.roles === roleOption}
                 onChange={handleChange}
                 required
+                hor
               />
               <span>{roleOption}</span>
             </label>
           ))}
+        </div> */}
+        <div>
+          <label className="block font-semibold mb-2">Select Role:</label>
+          <div className="flex space-x-4">
+            {rolesList.map((roleOption) => (
+              <label
+                key={roleOption}
+                className={`cursor-pointer px-4 py-2 rounded-lg border transition-colors
+        ${
+          form.roles === roleOption
+            ? "bg-blue-600 text-white border-blue-600" // selected style
+            : "bg-gray-100 text-gray-700 border-gray-300"
+        } // default style
+      `}
+              >
+                <input
+                  type="radio"
+                  name="roles"
+                  value={roleOption}
+                  checked={form.roles === roleOption}
+                  onChange={handleChange}
+                  className="hidden"
+                  required
+                />
+                {roleOption}
+              </label>
+            ))}
+          </div>
         </div>
         <button
           type="submit"
-          className="bg-gradient-to-r from-amber-200 to-green-500 text-white font-semibold px-4 py-2 rounded w-full hover:opacity-90"
+          className="bg-gradient-to-r from-green-300 to-blue-500 text-white font-semibold px-4 py-2 rounded w-full hover:opacity-90"
         >
           Submit
         </button>

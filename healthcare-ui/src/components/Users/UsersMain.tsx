@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { deleteUser, getUsers, updateUser } from "../services/Auth.service";
-import type UserResponseDto from "../types/UserResponseDto";
+import { deleteUser, getUsers, updateUser } from "../../services/Auth.service";
+import type UserResponseDto from "../../types/UserResponseDto";
 import AddAdminPage from "./AddAdminPage";
 
-const UsersTable: React.FC = () => {
+const UsersMain: React.FC = () => {
   const [users, setUsers] = useState<UserResponseDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -69,13 +69,13 @@ const UsersTable: React.FC = () => {
 
   return (
     <div className="p-8">
-      <div>
+      <div className="flex justify-between">
         <h2 className="text-2xl font-bold mb-6 text-gray-800">All Users</h2>
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded"
           onClick={() => setAddUser(true)}
         >
-          Add new Doctor
+          New User
         </button>
       </div>
       <div className="overflow-x-auto shadow-lg rounded-lg">
@@ -183,4 +183,4 @@ const UsersTable: React.FC = () => {
   );
 };
 
-export default UsersTable;
+export default UsersMain;

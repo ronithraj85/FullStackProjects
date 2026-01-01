@@ -2,6 +2,7 @@ package com.healthcare.clinic.controller;
 
 import com.healthcare.clinic.dto.PatientRequest;
 import com.healthcare.clinic.dto.PatientResponse;
+import com.healthcare.clinic.dto.UserResponseDto;
 import com.healthcare.clinic.entity.Patient;
 import com.healthcare.clinic.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class PatientController {
     @Autowired
     private final PatientService patientService;
 
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     @Operation(summary = "Registers for a new patient")
     @PostMapping
     public ResponseEntity<Patient> register(@Valid @RequestBody PatientRequest req) {
@@ -49,12 +52,15 @@ public class PatientController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     @Operation(summary =" Update the Patient info")
     @PutMapping("/{id}")
     public ResponseEntity<Patient> update(@PathVariable("id") Long id, @Valid @RequestBody PatientRequest req) {
         Patient update = Patient.builder()
                 .name(req.getName())
                 .dateOfBirth(req.getDateOfBirth())
+                .email(req.getEmail())
+                .mobile(req.getMobile())
                 .active(true)
                 .build();
         return ResponseEntity.ok(patientService.update(id, update));
@@ -62,8 +68,10 @@ public class PatientController {
 
     @Operation(summary =" Delete the patient based on id")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deactivate(@PathVariable Long id) {
+    public ResponseEntity<Void> removePatient(@PathVariable("id") Long id) {
         patientService.deactivate(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }

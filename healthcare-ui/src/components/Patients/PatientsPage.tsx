@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  deletePatient,
-  getPatients,
-  updatePatient,
-} from "./patient.service";
+import { deletePatient, getPatients, updatePatient } from "./patient.service";
 import type { PatientResponseDto } from "../../types/PatientResponseDto";
 import AddPatient from "./AddPatient";
 
-const PatientsMain = () => {
+const PatientsPage = () => {
   const [addPatient, setAddPatient] = useState(false);
   const [patientEdited, setPatientEdit] = useState("");
   const [patientDeleted, setPatientDeleted] = useState("");
@@ -197,4 +193,4 @@ const PatientsMain = () => {
   );
 };
 
-export default PatientsMain;
+export default PatientsPage;

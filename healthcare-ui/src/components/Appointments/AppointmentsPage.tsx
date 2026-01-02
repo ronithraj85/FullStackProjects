@@ -1,0 +1,13 @@
+// src/pages/AppointmentsPage.tsx
+import React from "react";
+import AppointmentForm from "./AppointmentsForm";
+import AppointmentList from "./AppointmentsList";
+
+export default function AppointmentsPage() {
+  return (
+    <div className="p-8">
+      <AppointmentForm />
+      <AppointmentList />
+    </div>
+  );
+}

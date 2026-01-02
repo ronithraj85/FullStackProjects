@@ -5,7 +5,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import HomePage from "./components/HomePage";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import UsersTable from "./components/Users/UsersMain";
+import UsersTable from "./components/Users/UsersPage";
 import AddAdminPage from "./components/Users/AddAdminPage";
 
 const App: React.FC = () => {

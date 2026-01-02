@@ -3,7 +3,7 @@ import { deleteUser, getUsers, updateUser } from "./user.service";
 import type UserResponseDto from "../../types/UserResponseDto";
 import AddAdminPage from "./AddAdminPage";
 
-const UsersMain: React.FC = () => {
+const UsersPage: React.FC = () => {
   const [users, setUsers] = useState<UserResponseDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -183,4 +183,4 @@ const UsersMain: React.FC = () => {
   );
 };
 
-export default UsersMain;
+export default UsersPage;

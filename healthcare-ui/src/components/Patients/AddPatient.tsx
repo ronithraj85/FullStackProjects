@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { addPatient } from "../../services/Auth.service";
+import { addPatient } from "./patient.service";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";

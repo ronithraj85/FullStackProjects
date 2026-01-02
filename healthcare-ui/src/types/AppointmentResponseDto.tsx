@@ -1,4 +1,4 @@
-export interface PatientResponseDto {
+export default interface AppointmentResponseDto {
   id: number;
   name: string;
   email: string;

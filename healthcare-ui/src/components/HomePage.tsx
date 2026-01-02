@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiFillHome } from "react-icons/ai";
-import DoctorsMain from "./Doctor/DoctorsMain";
-import UsersMain from "./Users/UsersMain";
-import PatientsMain from "./Patients/PatientsMain";
+import PatientsPage from "./Patients/PatientsPage";
+import DoctorsPage from "./Doctor/DoctorsPage";
+import UsersPage from "./Users/UsersPage";
+import AppointmentsPage from "./Appointments/AppointmentsPAge";
 
 // Utility to decode JWT payload
 function parseJwt(
@@ -90,10 +91,10 @@ const HomePage: React.FC = () => {
           {roles.includes("ROLE_USER") && (
             // || roles.includes("ROLE_ADMIN")
             <button
-              onClick={() => navigate("/appointments/schedule")}
+              onClick={() => setActiveSection("appointments")}
               className="hover:bg-blue-700 px-3 py-2 rounded"
             >
-              Schedule Appointment
+              Appointments
             </button>
           )}
 
@@ -119,10 +120,11 @@ const HomePage: React.FC = () => {
         </div>
       )}
       {/* 👇 Conditional rendering based on activeSection */}
-      {activeSection === "users" && <UsersMain />}
+      {activeSection === "users" && <UsersPage />}
       {/* {activeSection === "admin" && <AddAdminPage />} */}
-      {activeSection === "doctors" && <DoctorsMain />}
-      {activeSection === "patients" && <PatientsMain />}
+      {activeSection === "doctors" && <DoctorsPage />}
+      {activeSection === "patients" && <PatientsPage />}
+      {activeSection === "appointments" && <AppointmentsPage />}
     </div>
   );
 };

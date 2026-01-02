@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { registerDoctor } from "../../services/Auth.service";
+import { registerDoctor } from "./doctor.service";
 
 export default function AddDoctorPage({ onDoctorAdded }) {
   const [form, setForm] = useState({

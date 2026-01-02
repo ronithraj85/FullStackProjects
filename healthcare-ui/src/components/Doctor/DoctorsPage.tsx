@@ -3,7 +3,7 @@ import type DoctorResponseDto from "../../types/DoctorResponseDto";
 import { deleteDoctor, getAllDoctors } from "./doctor.service";
 import AddDoctorPage from "./AddDoctor";
 
-const DoctorsMain = () => {
+const DoctorsPage = () => {
   const [doctors, setDoctors] = useState<DoctorResponseDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [addDoctor, setAddDoctor] = useState(false);
@@ -84,4 +84,4 @@ const DoctorsMain = () => {
   );
 };
 
-export default DoctorsMain;
+export default DoctorsPage;

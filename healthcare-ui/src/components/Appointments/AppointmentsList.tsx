@@ -1,17 +1,7 @@
 // src/components/AppointmentList.tsx
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { getAllAppointments } from "./appointment.service";
 import type AppointmentResponseDto from "../../types/AppointmentResponseDto";
-
-interface Appointment {
-  id: number;
-  patientName: string;
-  doctorName: string;
-  startTime: string;
-  durationMinutes: number;
-  notes: string;
-}
 
 export default function AppointmentsList() {
   const [appointments, setAppointments] = useState<AppointmentResponseDto[]>(
@@ -35,7 +25,7 @@ export default function AppointmentsList() {
       <h2 className="text-xl font-bold mb-4">Upcoming Appointments</h2>
       <ul className="space-y-3">
         {appointments.map((a) => (
-          <li key={a.id} className="p-4 bg-gray-100 rounded shadow">
+          <li key={a.id} className="p-4 bg-gray-400 rounded shadow">
             <p>
               <strong>Patient:</strong> {a.patientName}
             </p>

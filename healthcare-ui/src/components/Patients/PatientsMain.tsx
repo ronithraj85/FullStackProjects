@@ -3,7 +3,7 @@ import {
   deletePatient,
   getPatients,
   updatePatient,
-} from "../../services/Auth.service";
+} from "./patient.service";
 import type { PatientResponseDto } from "../../types/PatientResponseDto";
 import AddPatient from "./AddPatient";
 

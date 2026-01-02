@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { deleteUser, getUsers, updateUser } from "../../services/Auth.service";
+import { deleteUser, getUsers, updateUser } from "./user.service";
 import type UserResponseDto from "../../types/UserResponseDto";
 import AddAdminPage from "./AddAdminPage";
 

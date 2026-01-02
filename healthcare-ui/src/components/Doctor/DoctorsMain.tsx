@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import type DoctorResponseDto from "../../types/DoctorResponseDto";
-import { deleteDoctor, getAllDoctors } from "../../services/Auth.service";
+import { deleteDoctor, getAllDoctors } from "./doctor.service";
 import AddDoctorPage from "./AddDoctor";
 
 const DoctorsMain = () => {

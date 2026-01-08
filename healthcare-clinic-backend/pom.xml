@@ -84,10 +84,24 @@
 			<version>0.12.3</version>
 			<scope>runtime</scope>
 		</dependency>
+
 		<!-- AOP -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
+<!--		Mail-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
+<!--		SMS-->
+		<dependency>
+			<groupId>com.twilio.sdk</groupId>
+			<artifactId>twilio</artifactId>
+			<version>10.5.1</version>
 		</dependency>
 
 		<!-- Lombok -->

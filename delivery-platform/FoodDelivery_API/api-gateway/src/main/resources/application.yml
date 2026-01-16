@@ -12,9 +12,24 @@ spring:
           uri: http://localhost:8484
           predicates:
             - Path=/api/auth/**
+          filters:
+            - StripPrefix=2
 
         - id: order-service
           uri: http://localhost:8686
           predicates:
             - Path=/api/orders/**
+          filters:
+            - StripPrefix=1
+
+        - id: restaurant-service
+          uri: http://localhost:8787
+          predicates:
+            - Path=/api/restaurants/**
+          filters:
+            - StripPrefix=1
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.cloud.gateway: DEBUG
 

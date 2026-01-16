@@ -1,16 +1,17 @@
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
+import { Outlet } from "react-router-dom";
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout() {
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Left Sidebar */}
       <Sidebar />
 
-      {/* Right Content */}
-      <div className="flex flex-col flex-1">
+      <div className="flex-1 flex flex-col">
         <Topbar />
-        <main className="p-6 flex-1 overflow-auto">{children}</main>
+        <main className="p-6">
+          <Outlet /> {/* 🔥 THIS IS WHERE ROUTES RENDER */}
+        </main>
       </div>
     </div>
   );

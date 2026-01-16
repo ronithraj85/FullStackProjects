@@ -6,6 +6,9 @@ export default defineConfig({
   server: {
     port: 5173,
   },
+  build: {
+    target: "esnext", // 🔥 REQUIRED
+  },
   plugins: [
     federation({
       name: "shell",
@@ -13,6 +16,7 @@ export default defineConfig({
         auth: "http://localhost:3001/assets/remoteEntry.js",
         order: "http://localhost:3002/assets/remoteEntry.js",
         admin: "http://localhost:3003/assets/remoteEntry.js",
+        restaurant: "http://localhost:3004/assets/remoteEntry.js",
       },
       shared: {
         react: { singleton: true, requiredVersion: "18.2.0" },

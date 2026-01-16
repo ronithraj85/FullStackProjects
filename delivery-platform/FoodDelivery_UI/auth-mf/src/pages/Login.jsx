@@ -1,75 +1,54 @@
 import { useState } from "react";
+import { loginUser } from "../api/authApi";
+import { useAuth } from "../context/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import Input from "../components/Input";
-import Button from "../components/Button";
-import Card from "../components/Card";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({ email: "", password: "" });
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      toast.error("All fields are required");
-      return;
-    }
-
+  const submit = async (e) => {
+    e.preventDefault();
     try {
-      setLoading(true);
-
-      const res = await fetch("http://localhost:8585/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Invalid credentials");
-      }
-
-      const data = await res.json();
-      localStorage.setItem("token", data.accessToken);
-
-      toast.success("Login successful");
-      window.location.href = "/";
+      const res = await loginUser(form);
+      login(res.data);
+      navigate("/");
     } catch (err) {
-      toast.error("Login failed");
-    } finally {
-      setLoading(false);
+      toast.error("Invalid credentials");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <Card title="Login">
-        <Input
-          label="Email"
-          type="email"
-          placeholder="ron@gmail.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+      <form onSubmit={submit} className="bg-white p-6 rounded shadow w-80">
+        <h2 className="text-xl font-bold mb-4 text-center">Login</h2>
+
+        <input
+          className="w-full mb-3 p-2 border rounded"
+          placeholder="Email"
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
 
-        <Input
-          label="Password"
+        <input
           type="password"
-          placeholder="••••••••"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          className="w-full mb-3 p-2 border rounded"
+          placeholder="Password"
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
 
-        <Button onClick={handleLogin} loading={loading}>
+        <button className="w-full bg-blue-600 text-white py-2 rounded">
           Login
-        </Button>
+        </button>
 
-        <p className="text-sm text-center mt-4">
-          Don’t have an account?{" "}
-          <a href="/auth/register" className="text-blue-600">
+        <p className="text-sm mt-3 text-center">
+          No account?{" "}
+          <Link to="/register" className="text-blue-600">
             Register
-          </a>
+          </Link>
         </p>
-      </Card>
+      </form>
     </div>
   );
 }

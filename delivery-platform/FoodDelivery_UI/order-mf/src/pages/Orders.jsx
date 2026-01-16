@@ -1,65 +1,44 @@
 import { useEffect, useState } from "react";
-import StatusBadge from "../components/StatusBadge";
-import Loader from "../components/Loader";
-import Table from "../components/Table";
+import { fetchAllOrders, fetchMyOrders } from "../api/orderApi";
+import { hasRole } from "../utils/auth";
+import OrderTable from "../components/OrderTable";
+import Loading from "../components/Loading";
+import toast from "react-hot-toast";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+
+  const isAdmin = hasRole("ROLE_ADMIN");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const loadOrders = async () => {
+      try {
+        const res = isAdmin ? await fetchAllOrders() : await fetchMyOrders();
 
-    fetch("http://localhost:8585/api/orders", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch orders");
-        }
-        return res.json();
-      })
-      .then(setOrders)
-      .catch(() => setError("Unable to load orders"))
-      .finally(() => setLoading(false));
-  }, []);
+        setOrders(res.data);
+      } catch (err) {
+        toast.error("Failed to load orders");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (loading) {
-    return <Loader text="Loading orders..." />;
-  }
+    loadOrders();
+  }, [isAdmin]);
 
-  if (error) {
-    return <div className="bg-red-100 text-red-700 p-4 rounded">{error}</div>;
-  }
+  if (loading) return <Loading />;
 
   return (
-    <div className="bg-white p-6 rounded shadow">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Orders</h2>
-      </div>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">
+        {isAdmin ? "All Orders" : "My Orders"}
+      </h1>
 
       {orders.length === 0 ? (
         <p className="text-gray-500">No orders found</p>
       ) : (
-        <Table
-          columns={["Order ID", "Status", "Amount", "Created At"]}
-          data={orders}
-          renderRow={(order) => (
-            <tr key={order.id} className="hover:bg-gray-50">
-              <td className="px-4 py-2 border-b">{order.id}</td>
-              <td className="px-4 py-2 border-b">
-                <StatusBadge status={order.status} />
-              </td>
-              <td className="px-4 py-2 border-b">₹{order.totalAmount}</td>
-              <td className="px-4 py-2 border-b text-sm text-gray-500">
-                {new Date(order.createdAt).toLocaleString()}
-              </td>
-            </tr>
-          )}
-        />
+        <OrderTable orders={orders} />
       )}
     </div>
   );

@@ -1,54 +1,42 @@
-import { useState } from "react";
-import { Home, ShoppingBag, Users, Menu } from "lucide-react";
-import SidebarItem from "./SidebarItem";
-import { useAuth } from "../context/AuthContext";
-
-const MENU = {
-  ROLE_ADMIN: [
-    { label: "Dashboard", path: "/", icon: Home },
-    { label: "Orders", path: "/orders", icon: ShoppingBag },
-    { label: "Users", path: "/users", icon: Users },
-  ],
-  ROLE_USER: [{ label: "My Orders", path: "/orders", icon: ShoppingBag }],
-};
+import { Link } from "react-router-dom";
+import { hasRole, logout } from "../utils/auth";
 
 export default function Sidebar() {
-  const { user } = useAuth();
-  const [collapsed, setCollapsed] = useState(false);
-
-  if (!user || !user.authorities?.length) return null;
-
-  const role = user.authorities[0];
-  const menus = MENU[role] || [];
+  const isAdmin = hasRole("ROLE_ADMIN");
 
   return (
-    <aside
-      className={`h-screen bg-gray-900 text-white transition-all duration-300 ${
-        collapsed ? "w-20" : "w-64"
-      }`}
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-800">
-        {!collapsed && <h1 className="text-lg font-bold">Food Admin</h1>}
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="p-1 rounded hover:bg-gray-800"
-        >
-          <Menu size={20} />
-        </button>
+    <aside className="w-64 bg-gray-900 text-white min-h-screen">
+      <div className="p-4 text-xl font-bold border-b border-gray-700">
+        Food Delivery
       </div>
 
-      {/* Menu */}
-      <nav className="mt-4 space-y-1">
-        {menus.map((item) => (
-          <SidebarItem
-            key={item.path}
-            icon={item.icon}
-            label={item.label}
-            path={item.path}
-            collapsed={collapsed}
-          />
-        ))}
+      <nav className="p-4 space-y-2">
+        <Link to="/" className="block px-3 py-2 rounded hover:bg-gray-700">
+          Dashboard
+        </Link>
+
+        <Link
+          to="/orders"
+          className="block px-3 py-2 rounded hover:bg-gray-700"
+        >
+          {isAdmin ? "All Orders" : "My Orders"}
+        </Link>
+
+        {isAdmin && (
+          <Link
+            to="/admin"
+            className="block px-3 py-2 rounded hover:bg-gray-700"
+          >
+            Admin Panel
+          </Link>
+        )}
+
+        <button
+          onClick={logout}
+          className="w-full text-left px-3 py-2 rounded hover:bg-red-600 mt-4"
+        >
+          Logout
+        </button>
       </nav>
     </aside>
   );

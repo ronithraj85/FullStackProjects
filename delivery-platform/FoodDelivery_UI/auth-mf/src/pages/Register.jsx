@@ -1,80 +1,57 @@
 import { useState } from "react";
+import { registerUser } from "../api/authApi";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import Input from "../components/Input";
-import Button from "../components/Button";
-import Card from "../components/Card";
 
 export default function Register() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    role: "ROLE_USER",
+  });
 
-  const handleRegister = async () => {
-    if (!name || !email || !password) {
-      toast.error("All fields are required");
-      return;
-    }
+  const navigate = useNavigate();
 
+  const submit = async (e) => {
+    e.preventDefault();
     try {
-      setLoading(true);
-
-      const res = await fetch("http://localhost:8585/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      if (!res.ok) {
-        throw new Error();
-      }
-
+      await registerUser(form);
       toast.success("Registration successful");
-      window.location.href = "/auth";
+      navigate("/login");
     } catch {
       toast.error("Registration failed");
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <Card title="Register">
-        <Input
-          label="Name"
-          placeholder="Ron"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+      <form onSubmit={submit} className="bg-white p-6 rounded shadow w-80">
+        <h2 className="text-xl font-bold mb-4 text-center">Register</h2>
+
+        <input
+          className="w-full mb-3 p-2 border rounded"
+          placeholder="Email"
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
 
-        <Input
-          label="Email"
-          type="email"
-          placeholder="ron@gmail.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <Input
-          label="Password"
+        <input
           type="password"
-          placeholder="••••••••"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          className="w-full mb-3 p-2 border rounded"
+          placeholder="Password"
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
 
-        <Button onClick={handleRegister} loading={loading}>
+        <button className="w-full bg-green-600 text-white py-2 rounded">
           Register
-        </Button>
+        </button>
 
-        <p className="text-sm text-center mt-4">
+        <p className="text-sm mt-3 text-center">
           Already have an account?{" "}
-          <a href="/auth" className="text-blue-600">
+          <Link to="/login" className="text-blue-600">
             Login
-          </a>
+          </Link>
         </p>
-      </Card>
+      </form>
     </div>
   );
 }

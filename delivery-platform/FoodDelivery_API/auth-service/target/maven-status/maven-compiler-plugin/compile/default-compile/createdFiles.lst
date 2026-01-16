@@ -1,7 +1,9 @@
+com\foodapp\auth\exception\GlobalExceptionHandler.class
 com\foodapp\auth\util\JwtUtil.class
 com\foodapp\auth\dto\LoginRequest.class
 com\foodapp\auth\dto\RegisterRequest.class
 com\foodapp\auth\entity\User.class
+com\foodapp\auth\exception\EmailAlreadyExistsException.class
 com\foodapp\auth\repository\RoleRepository.class
 com\foodapp\auth\config\PasswordConfig.class
 com\foodapp\auth\config\SecurityConfig.class

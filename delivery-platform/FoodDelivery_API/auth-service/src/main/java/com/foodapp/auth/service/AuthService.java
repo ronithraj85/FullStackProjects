@@ -4,6 +4,7 @@ import com.foodapp.auth.dto.LoginRequest;
 import com.foodapp.auth.dto.RegisterRequest;
 import com.foodapp.auth.entity.Role;
 import com.foodapp.auth.entity.User;
+import com.foodapp.auth.exception.EmailAlreadyExistsException;
 import com.foodapp.auth.repository.RoleRepository;
 import com.foodapp.auth.repository.UserRepository;
 import com.foodapp.auth.util.JwtUtil;
@@ -25,8 +26,9 @@ public class AuthService {
     public void register(RegisterRequest request) {
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already registered");
+            throw new EmailAlreadyExistsException("Email already registered");
         }
+
 
         String roleName = "ROLE_" + request.getRole().toUpperCase();
 

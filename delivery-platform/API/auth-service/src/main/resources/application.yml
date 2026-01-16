@@ -1,0 +1,30 @@
+server:
+  port: 8484
+
+spring:
+  application:
+    name: auth-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/food_delivery
+    username: postgres
+    password: root123
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: auth
+        format_sql: true
+
+jwt:
+  secret: foodapp-secret-key
+  expiry: 86400000  # 1 day in ms
+
+logging:
+  level:
+    org.springframework.security: INFO

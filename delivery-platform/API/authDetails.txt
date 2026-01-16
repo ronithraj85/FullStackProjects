@@ -1,0 +1,64 @@
+Client → Login API
+   ↓
+Auth Service validates credentials
+   ↓
+JWT generated (roles embedded)
+   ↓
+Client sends JWT in Authorization header
+   ↓
+Other services validate JWT (NO DB call)
+
+auth-service/
+ ├── config
+ │   ├── SecurityConfig.java
+ │   ├── JwtUtil.java
+ │   └── JwtAuthFilter.java
+ │
+ ├── controller
+ │   └── AuthController.java
+ │
+ ├── service
+ │   ├── AuthService.java
+ │   └── impl/AuthServiceImpl.java
+ │
+ ├── domain
+ │   ├── User.java
+ │   ├── Role.java
+ │   └── UserRole.java
+ │
+ ├── repository
+ │   ├── UserRepository.java
+ │   └── RoleRepository.java
+ │
+ ├── dto
+ │   ├── LoginRequest.java
+ │   ├── RegisterRequest.java
+ │   └── AuthResponse.java
+ │
+ └── AuthServiceApplication.java
+
+Why ManyToMany?
+
+Users can have multiple roles
+
+Roles are reusable
+
+🔹 Why EAGER fetch?
+
+Roles are required every time for JWT
+
+Avoids lazy-loading issues during auth
+
+🔹 Why UUID for User ID?
+
+Safe for distributed systems
+
+No predictable IDs
+
+Login Request
+ → Spring Security
+ → UserDetailsService.loadUserByUsername()
+ → Fetch user from DB
+ → Convert User → UserDetails
+ → Password match (BCrypt)
+ → Authentication success/failure

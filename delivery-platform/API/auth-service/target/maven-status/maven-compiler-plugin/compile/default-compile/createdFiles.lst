@@ -1,0 +1,17 @@
+com\foodapp\auth\util\JwtUtil.class
+com\foodapp\auth\dto\LoginRequest.class
+com\foodapp\auth\dto\RegisterRequest.class
+com\foodapp\auth\entity\User.class
+com\foodapp\auth\repository\RoleRepository.class
+com\foodapp\auth\config\PasswordConfig.class
+com\foodapp\auth\config\SecurityConfig.class
+com\foodapp\auth\entity\Role.class
+com\foodapp\auth\controller\TestController.class
+com\foodapp\auth\filter\JwtAuthenticationFilter.class
+com\foodapp\auth\config\RoleDataInitializer.class
+com\foodapp\auth\AuthServiceApplication.class
+com\foodapp\auth\repository\UserRepository.class
+com\foodapp\auth\service\AuthService.class
+com\foodapp\auth\controller\AuthController.class
+com\foodapp\auth\service\UserDetailsServiceImpl.class
+com\foodapp\auth\dto\AuthResponse.class

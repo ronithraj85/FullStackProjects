@@ -1,0 +1,3 @@
+com\foodapp\gateway\config\JwtConfig.class
+com\foodapp\gateway\config\SecurityConfig.class
+com\foodapp\gateway\ApiGatewayApplication.class

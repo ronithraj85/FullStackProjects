@@ -25,6 +25,9 @@ public class Order {
 
     private LocalDateTime createdAt;
 
+    private String userEmail;
+
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items;
 }

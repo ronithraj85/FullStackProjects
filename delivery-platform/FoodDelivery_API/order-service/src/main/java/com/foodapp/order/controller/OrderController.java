@@ -2,7 +2,6 @@ package com.foodapp.order.controller;
 
 import com.foodapp.order.entity.Order;
 import com.foodapp.order.repository.OrderRepository;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -20,12 +19,12 @@ public class OrderController {
 
     // USER places order
     @PostMapping
-    public Order placeOrder(Authentication auth) {
-
-        Long userId = Long.parseLong(auth.getName());
+    public Order placeOrder(
+            @RequestHeader("X-User-Email") String userEmail
+    ) {
 
         Order order = new Order();
-        order.setUserId(userId);
+        order.setUserEmail(userEmail); // change field if needed
         order.setStatus("CREATED");
         order.setTotalAmount(500.0);
         order.setCreatedAt(LocalDateTime.now());
@@ -35,9 +34,9 @@ public class OrderController {
 
     // USER views own orders
     @GetMapping("/my")
-    public List<Order> myOrders(Authentication auth) {
-
-        Long userId = Long.parseLong(auth.getName());
-        return orderRepository.findByUserId(userId);
+    public List<Order> myOrders(
+            @RequestHeader("X-User-Email") String userEmail
+    ) {
+        return orderRepository.findByUserEmail(userEmail);
     }
 }

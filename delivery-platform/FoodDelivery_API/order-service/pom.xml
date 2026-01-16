@@ -34,12 +34,6 @@
 			<artifactId>postgresql</artifactId>
 		</dependency>
 
-		<!-- Security (ONLY for reading JWT headers) -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-
 		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>

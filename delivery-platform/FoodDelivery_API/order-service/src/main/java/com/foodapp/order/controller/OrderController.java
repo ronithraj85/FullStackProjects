@@ -2,6 +2,7 @@ package com.foodapp.order.controller;
 
 import com.foodapp.order.entity.Order;
 import com.foodapp.order.repository.OrderRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -39,8 +40,10 @@ public class OrderController {
     }
 
     // ✅ ADMIN views all orders
-    @GetMapping("/admin/orders")
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/orders")
+    public List<Order> getOrders() {
+        return orderService.getAllOrders();
     }
+
 }

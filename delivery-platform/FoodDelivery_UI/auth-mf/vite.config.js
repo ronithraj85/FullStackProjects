@@ -5,21 +5,23 @@ import federation from "@originjs/vite-plugin-federation";
 export default defineConfig({
   server: {
     port: 3001,
-    strictPort: true,
+  },
+  build: {
+    target: "esnext", // 🔥 REQUIRED for module federation
   },
   plugins: [
-    react(),
     federation({
       name: "auth",
-      filename: "remoteEntry.js", // 🔥 REQUIRED
+      filename: "remoteEntry.js",
       exposes: {
         "./App": "./src/App.jsx",
       },
-      shared: ["react", "react-dom"],
+      shared: {
+        react: { singleton: true, requiredVersion: "18.2.0" },
+        "react-dom": { singleton: true, requiredVersion: "18.2.0" },
+        "react-router-dom": { singleton: true },
+      },
     }),
+    react(),
   ],
-  build: {
-    target: "esnext", // 🔥 REQUIRED
-    modulePreload: false, // 🔥 IMPORTANT FOR DEV
-  },
 });

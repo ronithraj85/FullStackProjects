@@ -3,12 +3,9 @@ import react from "@vitejs/plugin-react";
 import federation from "@originjs/vite-plugin-federation";
 
 export default defineConfig({
-  server: {
-    port: 3003,
-    strictPort: true,
-  },
+  server: { port: 3003 },
+  build: { target: "esnext" },
   plugins: [
-    react(),
     federation({
       name: "admin",
       filename: "remoteEntry.js",
@@ -17,8 +14,6 @@ export default defineConfig({
       },
       shared: ["react", "react-dom"],
     }),
+    react(),
   ],
-  build: {
-    target: "esnext",
-  },
 });

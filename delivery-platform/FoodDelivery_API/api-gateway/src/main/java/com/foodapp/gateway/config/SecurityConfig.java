@@ -61,7 +61,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of(
-                "http://localhost:3000", // shell
+                "http://localhost:5173", // shell
                 "http://localhost:3001", // auth-mf
                 "http://localhost:3002", // order-mf
                 "http://localhost:3003"  // admin-mf

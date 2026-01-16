@@ -6,18 +6,21 @@ export default defineConfig({
   server: {
     port: 3002,
   },
+  build: {
+    target: "esnext",
+  },
   plugins: [
-    react(),
     federation({
       name: "order",
       filename: "remoteEntry.js",
       exposes: {
         "./App": "./src/App.jsx",
       },
-      shared: ["react", "react-dom"],
+      shared: {
+        react: { singleton: true, requiredVersion: "18.2.0" },
+        "react-dom": { singleton: true, requiredVersion: "18.2.0" },
+      },
     }),
+    react(),
   ],
-  build: {
-    target: "esnext",
-  },
 });

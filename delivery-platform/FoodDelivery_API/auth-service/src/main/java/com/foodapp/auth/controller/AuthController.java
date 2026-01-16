@@ -1,8 +1,6 @@
 package com.foodapp.auth.controller;
 
-import com.foodapp.auth.dto.AuthResponse;
-import com.foodapp.auth.dto.LoginRequest;
-import com.foodapp.auth.dto.RegisterRequest;
+import com.foodapp.auth.dto.*;
 import com.foodapp.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +14,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(
+    public ResponseEntity<RegisterResponse> register(
             @RequestBody RegisterRequest request) {
 
         authService.register(request);
         return ResponseEntity.ok(
-                new AuthResponse("User registered successfully")
+                new RegisterResponse("User registered successfully")
         );
     }
 
@@ -29,8 +27,17 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(
             @RequestBody LoginRequest request) {
 
-        String token = authService.login(request);
-        return ResponseEntity.ok(new AuthResponse(token));
+        AuthResult authResult = authService.login(request);
+        // authResult should contain token, email, roles
+
+        return ResponseEntity.ok(
+                new AuthResponse(
+                        authResult.getAccessToken(),
+                        authResult.getEmail(),
+                        authResult.getRoles()
+                )
+        );
     }
+
 
 }

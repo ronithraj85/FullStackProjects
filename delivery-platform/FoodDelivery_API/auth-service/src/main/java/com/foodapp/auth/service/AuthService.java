@@ -1,5 +1,6 @@
 package com.foodapp.auth.service;
 
+import com.foodapp.auth.dto.AuthResult;
 import com.foodapp.auth.dto.LoginRequest;
 import com.foodapp.auth.dto.RegisterRequest;
 import com.foodapp.auth.entity.Role;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +46,7 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public String login(LoginRequest request) {
+    public AuthResult login(LoginRequest request) {
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -53,13 +56,26 @@ public class AuthService {
         );
 
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String role = user.getRoles().iterator().next().getName();
+        List<String> roles = user.getRoles()
+                .stream()
+                .map(Role::getName)
+                .toList();
 
-        return jwtUtil.generateToken(user.getEmail(), role);
+        String token = jwtUtil.generateToken(
+                user.getEmail(),
+                roles.get(0) // or modify JWT to accept list
+        );
+
+        return new AuthResult(
+                token,
+                user.getEmail(),
+                roles
+        );
     }
 
 
-   
+
+
 }

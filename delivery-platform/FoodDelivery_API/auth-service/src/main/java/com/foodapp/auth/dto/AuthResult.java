@@ -1,13 +1,12 @@
 package com.foodapp.auth.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
+
 import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class AuthResponse {
-
+public class AuthResult {
     private String accessToken;
     private String email;
     private List<String> roles;

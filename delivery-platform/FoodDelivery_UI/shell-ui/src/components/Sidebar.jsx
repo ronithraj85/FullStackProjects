@@ -1,8 +1,14 @@
-import { Link } from "react-router-dom";
-import { hasRole, logout } from "../utils/auth";
+import { Link, useLocation } from "react-router-dom";
+import { hasRole } from "../utils/auth";
 
 export default function Sidebar() {
   const isAdmin = hasRole("ROLE_ADMIN");
+  const location = useLocation();
+
+  const linkClass = (path) =>
+    `block px-3 py-2 rounded ${
+      location.pathname === path ? "bg-gray-700" : "hover:bg-gray-700"
+    }`;
 
   return (
     <aside className="w-64 bg-gray-900 text-white min-h-screen">
@@ -11,32 +17,19 @@ export default function Sidebar() {
       </div>
 
       <nav className="p-4 space-y-2">
-        <Link to="/" className="block px-3 py-2 rounded hover:bg-gray-700">
+        <Link to="/" className={linkClass("/")}>
           Dashboard
         </Link>
 
-        <Link
-          to="/orders"
-          className="block px-3 py-2 rounded hover:bg-gray-700"
-        >
+        <Link to="/orders" className={linkClass("/orders")}>
           {isAdmin ? "All Orders" : "My Orders"}
         </Link>
 
         {isAdmin && (
-          <Link
-            to="/admin"
-            className="block px-3 py-2 rounded hover:bg-gray-700"
-          >
+          <Link to="/admin" className={linkClass("/admin")}>
             Admin Panel
           </Link>
         )}
-
-        <button
-          onClick={logout}
-          className="w-full text-left px-3 py-2 rounded hover:bg-red-600 mt-4"
-        >
-          Logout
-        </button>
       </nav>
     </aside>
   );

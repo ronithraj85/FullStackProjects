@@ -13,9 +13,8 @@ export default function Login() {
     e.preventDefault();
     try {
       const res = await loginUser(form);
-      login(res.data);
-      navigate("/");
-    } catch (err) {
+      login(res.data); // 🔥 THIS triggers redirect
+    } catch {
       toast.error("Invalid credentials");
     }
   };

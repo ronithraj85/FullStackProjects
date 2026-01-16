@@ -17,6 +17,7 @@ export default function Orders() {
         const res = isAdmin ? await fetchAllOrders() : await fetchMyOrders();
 
         setOrders(res.data);
+        toast.success("Orders loaded");
       } catch (err) {
         toast.error("Failed to load orders");
       } finally {

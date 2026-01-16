@@ -1,3 +1,5 @@
+import "./index.css"; // 🔥 REQUIRED FOR MFE
+
 import Orders from "./pages/Orders";
 import { Toaster } from "react-hot-toast";
 

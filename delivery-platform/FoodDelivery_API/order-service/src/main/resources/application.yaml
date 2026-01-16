@@ -1,19 +1,20 @@
 server:
   port: 8686
 
-  spring:
-    application:
-      name: order-service
+spring:
+  application:
+    name: order-service
 
-    datasource:
-      url: jdbc:postgresql://localhost:5432/food_delivery
-      username: postgres
-      password: root123
+  datasource:
+    url: jdbc:postgresql://localhost:5432/food_delivery
+    username: postgres
+    password: root123
+    driver-class-name: org.postgresql.Driver
 
-    jpa:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
       hibernate:
-        ddl-auto: update
-      show-sql: true
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect

@@ -16,4 +16,4 @@ spring:
         - id: order-service
           uri: http://localhost:8686
           predicates:
-            - Path=/api/orders/**
+            - Path=/api/orders/**,/api/admin/**

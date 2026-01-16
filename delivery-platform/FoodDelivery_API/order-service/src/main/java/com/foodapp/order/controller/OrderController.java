@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/api")
 public class OrderController {
 
     private final OrderRepository orderRepository;
@@ -18,25 +18,29 @@ public class OrderController {
     }
 
     // USER places order
-    @PostMapping
+    @PostMapping("/orders")
     public Order placeOrder(
             @RequestHeader("X-User-Email") String userEmail
     ) {
-
         Order order = new Order();
-        order.setUserEmail(userEmail); // change field if needed
+        order.setUserEmail(userEmail);
         order.setStatus("CREATED");
         order.setTotalAmount(500.0);
         order.setCreatedAt(LocalDateTime.now());
-
         return orderRepository.save(order);
     }
 
     // USER views own orders
-    @GetMapping("/my")
+    @GetMapping("/orders/my")
     public List<Order> myOrders(
             @RequestHeader("X-User-Email") String userEmail
     ) {
         return orderRepository.findByUserEmail(userEmail);
+    }
+
+    // ✅ ADMIN views all orders
+    @GetMapping("/admin/orders")
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
     }
 }

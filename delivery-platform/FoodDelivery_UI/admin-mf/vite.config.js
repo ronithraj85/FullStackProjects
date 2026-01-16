@@ -4,14 +4,14 @@ import federation from "@originjs/vite-plugin-federation";
 
 export default defineConfig({
   server: {
-    port: 3001,
+    port: 3003,
     strictPort: true,
   },
   plugins: [
     react(),
     federation({
-      name: "auth",
-      filename: "remoteEntry.js", // 🔥 REQUIRED
+      name: "admin",
+      filename: "remoteEntry.js",
       exposes: {
         "./App": "./src/App.jsx",
       },
@@ -19,7 +19,6 @@ export default defineConfig({
     }),
   ],
   build: {
-    target: "esnext", // 🔥 REQUIRED
-    modulePreload: false, // 🔥 IMPORTANT FOR DEV
+    target: "esnext",
   },
 });

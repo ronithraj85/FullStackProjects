@@ -1,0 +1,10 @@
+import OrdersTable from "./components/OrdersTable";
+
+export default function App() {
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+      <OrdersTable />
+    </div>
+  );
+}

@@ -4,11 +4,12 @@ import AdminHeader from "../components/AdminHeader";
 
 export default function MainLayout() {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex">
       <Sidebar />
-      <div className="flex-1 flex flex-col bg-gray-100">
+
+      <div className="flex-1 min-h-screen bg-gray-100">
         <AdminHeader />
-        <main className="flex-1 p-6">
+        <main className="p-6">
           <Outlet />
         </main>
       </div>

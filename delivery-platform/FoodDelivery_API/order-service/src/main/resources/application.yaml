@@ -18,3 +18,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+security:
+  oauth2:
+    resourceserver:
+      jwt:
+        secret-key: my-super-secret-key-for-food-delivery-platform-123456
+
+

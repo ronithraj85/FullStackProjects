@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8080"; // API Gateway
+const API_BASE_URL = "http://localhost:8585"; // API Gateway
 
 export async function httpClient(
   url,

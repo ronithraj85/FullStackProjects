@@ -1,49 +1,35 @@
 package com.foodapp.order.controller;
 
 import com.foodapp.order.entity.Order;
-import com.foodapp.order.repository.OrderRepository;
+import com.foodapp.order.service.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class OrderController {
 
-    private final OrderRepository orderRepository;
+    private final OrderService orderService;
 
-    public OrderController(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
-
-    // USER places order
     @PostMapping("/orders")
-    public Order placeOrder(
-            @RequestHeader("X-User-Email") String userEmail
-    ) {
-        Order order = new Order();
-        order.setUserEmail(userEmail);
-        order.setStatus("CREATED");
-        order.setTotalAmount(500.0);
-        order.setCreatedAt(LocalDateTime.now());
-        return orderRepository.save(order);
+    public Order placeOrder(Authentication authentication) {
+        return orderService.placeOrder(authentication.getName());
     }
 
-    // USER views own orders
     @GetMapping("/orders/my")
-    public List<Order> myOrders(
-            @RequestHeader("X-User-Email") String userEmail
-    ) {
-        return orderRepository.findByUserEmail(userEmail);
+    public List<Order> myOrders(Authentication authentication) {
+        return orderService.getOrdersForUser(authentication.getName());
     }
 
-    // ✅ ADMIN views all orders
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/orders")
-    public List<Order> getOrders() {
+    public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
-
 }
+

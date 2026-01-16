@@ -1,5 +1,8 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import Input from "../components/Input";
+import Button from "../components/Button";
+import Card from "../components/Card";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -8,46 +11,30 @@ export default function Login() {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      toast.error("Email and password are required");
+      toast.error("All fields are required");
       return;
     }
 
     try {
       setLoading(true);
 
-      const response = await fetch("http://localhost:8585/api/auth/login", {
+      const res = await fetch("http://localhost:8585/api/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) {
+      if (!res.ok) {
         throw new Error("Invalid credentials");
       }
 
-      const data = await response.json();
-      /*
-        Expected backend response:
-        {
-          accessToken: "...",
-          email: "ron@gmail.com",
-          roles: ["ROLE_ADMIN"]
-        }
-      */
-
+      const data = await res.json();
       localStorage.setItem("token", data.accessToken);
 
       toast.success("Login successful");
-
-      // 🔥 Redirect into Shell (dashboard)
       window.location.href = "/";
     } catch (err) {
-      toast.error("Login failed. Check credentials");
+      toast.error("Login failed");
     } finally {
       setLoading(false);
     }
@@ -55,42 +42,34 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-6 rounded shadow w-96">
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
-
-        <input
+      <Card title="Login">
+        <Input
+          label="Email"
           type="email"
-          className="border p-2 w-full mb-3 rounded"
-          placeholder="Email"
+          placeholder="ron@gmail.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <input
+        <Input
+          label="Password"
           type="password"
-          className="border p-2 w-full mb-4 rounded"
-          placeholder="Password"
+          placeholder="••••••••"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button
-          onClick={handleLogin}
-          disabled={loading}
-          className={`w-full text-white p-2 rounded ${
-            loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
-          }`}
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
+        <Button onClick={handleLogin} loading={loading}>
+          Login
+        </Button>
 
-        <p className="mt-4 text-sm text-center">
-          No account?{" "}
+        <p className="text-sm text-center mt-4">
+          Don’t have an account?{" "}
           <a href="/auth/register" className="text-blue-600">
             Register
           </a>
         </p>
-      </div>
+      </Card>
     </div>
   );
 }

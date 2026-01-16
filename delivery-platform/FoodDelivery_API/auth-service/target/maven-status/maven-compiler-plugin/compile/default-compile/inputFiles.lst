@@ -5,8 +5,10 @@ R:\Learning\Github\FullStackProjects\delivery-platform\FoodDelivery_API\auth-ser
 R:\Learning\Github\FullStackProjects\delivery-platform\FoodDelivery_API\auth-service\src\main\java\com\foodapp\auth\controller\AuthController.java
 R:\Learning\Github\FullStackProjects\delivery-platform\FoodDelivery_API\auth-service\src\main\java\com\foodapp\auth\controller\TestController.java
 R:\Learning\Github\FullStackProjects\delivery-platform\FoodDelivery_API\auth-service\src\main\java\com\foodapp\auth\dto\AuthResponse.java
+R:\Learning\Github\FullStackProjects\delivery-platform\FoodDelivery_API\auth-service\src\main\java\com\foodapp\auth\dto\AuthResult.java
 R:\Learning\Github\FullStackProjects\delivery-platform\FoodDelivery_API\auth-service\src\main\java\com\foodapp\auth\dto\LoginRequest.java
 R:\Learning\Github\FullStackProjects\delivery-platform\FoodDelivery_API\auth-service\src\main\java\com\foodapp\auth\dto\RegisterRequest.java
+R:\Learning\Github\FullStackProjects\delivery-platform\FoodDelivery_API\auth-service\src\main\java\com\foodapp\auth\dto\RegisterResponse.java
 R:\Learning\Github\FullStackProjects\delivery-platform\FoodDelivery_API\auth-service\src\main\java\com\foodapp\auth\entity\Role.java
 R:\Learning\Github\FullStackProjects\delivery-platform\FoodDelivery_API\auth-service\src\main\java\com\foodapp\auth\entity\User.java
 R:\Learning\Github\FullStackProjects\delivery-platform\FoodDelivery_API\auth-service\src\main\java\com\foodapp\auth\exception\EmailAlreadyExistsException.java

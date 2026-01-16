@@ -12,6 +12,8 @@ com\foodapp\auth\controller\TestController.class
 com\foodapp\auth\filter\JwtAuthenticationFilter.class
 com\foodapp\auth\config\RoleDataInitializer.class
 com\foodapp\auth\AuthServiceApplication.class
+com\foodapp\auth\dto\RegisterResponse.class
+com\foodapp\auth\dto\AuthResult.class
 com\foodapp\auth\repository\UserRepository.class
 com\foodapp\auth\service\AuthService.class
 com\foodapp\auth\controller\AuthController.class

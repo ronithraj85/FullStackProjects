@@ -3,6 +3,7 @@ package com.foodapp.order.controller;
 import com.foodapp.order.dto.CreateOrderRequest;
 import com.foodapp.order.dto.UpdateOrderStatusRequest;
 import com.foodapp.order.entity.Order;
+import com.foodapp.order.entity.OrderStatus;
 import com.foodapp.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -79,21 +80,22 @@ public class OrderController {
         return orderService.getOrdersForRestaurant(restaurantId);
     }
 
-    @PutMapping("/orders/{orderId}/status")
+    // OWNER → ACCEPT / REJECT ORDER
+    @PutMapping("/{orderId}/status")
     public Order updateOrderStatus(
-            @PathVariable("orderId") Long orderId,
+            @PathVariable Long orderId,
+            @RequestParam OrderStatus status,
             @RequestHeader("X-USER-ID") Long ownerId,
-            @RequestHeader("X-USER-ROLE") String role,
-            @RequestBody UpdateOrderStatusRequest request
+            @RequestHeader("X-USER-ROLE") String role
     ) {
         if (!"ROLE_OWNER".equals(role)) {
             throw new RuntimeException("Only owners can update order status");
         }
 
-        return orderService.updateOrderStatus(
+        return orderService.updateOrderStatusByOwner(
                 orderId,
                 ownerId,
-                request.getStatus()
+                status
         );
     }
 

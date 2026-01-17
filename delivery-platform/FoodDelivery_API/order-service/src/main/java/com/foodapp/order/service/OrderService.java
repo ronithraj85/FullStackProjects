@@ -105,29 +105,28 @@ public class OrderService {
     }
 
     @Transactional
-    public Order updateOrderStatus(
+    public Order updateOrderStatusByOwner(
             Long orderId,
             Long ownerId,
             OrderStatus newStatus
     ) {
+
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
+        // 🔐 INTERNAL OWNERSHIP CHECK
         boolean isOwner = restaurantOwnershipClient.isOwnerOfRestaurant(
                 order.getRestaurantId(),
                 ownerId
         );
 
         if (!isOwner) {
-            throw new RuntimeException("Not authorized to update this order");
+            throw new RuntimeException("Not authorized for this restaurant");
         }
-
-        validateTransition(order.getStatus(), newStatus);
 
         order.setStatus(newStatus);
         return orderRepository.save(order);
     }
-
 
     private void validateTransition(OrderStatus current, OrderStatus next) {
         if (current == OrderStatus.CREATED && next == OrderStatus.ACCEPTED) return;

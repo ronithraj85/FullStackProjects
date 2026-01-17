@@ -18,8 +18,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/internal/**").hasAuthority("INTERNAL")
-                        .anyRequest().permitAll()
+                        .requestMatchers("/internal/**").permitAll() // later: mTLS / token
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(
                         new InternalAuthFilter(),

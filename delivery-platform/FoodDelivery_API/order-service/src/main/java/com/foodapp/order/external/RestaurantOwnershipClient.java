@@ -12,7 +12,7 @@ public interface RestaurantOwnershipClient {
 
     @GetMapping("/internal/restaurants/{restaurantId}/owner/{ownerId}")
     boolean isOwnerOfRestaurant(
-            @PathVariable Long restaurantId,
-            @PathVariable Long ownerId
+            @PathVariable("restaurantId") Long restaurantId,
+            @PathVariable("ownerId") Long ownerId
     );
 }

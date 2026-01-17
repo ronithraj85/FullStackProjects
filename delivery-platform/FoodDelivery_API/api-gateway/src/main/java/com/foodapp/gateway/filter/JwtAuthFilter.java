@@ -58,11 +58,16 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
 
         String correlationId = UUID.randomUUID().toString();
 
+        String email = jwtUtil.getEmail(token);
+
         ServerHttpRequest mutatedRequest = exchange.getRequest().mutate()
-                .header("X-USER-ID", String.valueOf(userId))
+                .header("X-USER-ID", userId.toString())
                 .header("X-USER-ROLE", role)
-                .header("X-CORRELATION-ID", correlationId)
+                .header("X-USER-EMAIL", email)
+                .header("X-INTERNAL-KEY", internalSecret)
                 .build();
+
+
 
         return chain.filter(
                 exchange.mutate().request(mutatedRequest).build()

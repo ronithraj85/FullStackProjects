@@ -4,13 +4,20 @@ import com.foodapp.order.dto.CreateOrderRequest;
 import com.foodapp.order.dto.OrderItemRequest;
 import com.foodapp.order.entity.Order;
 import com.foodapp.order.entity.OrderItem;
-import com.foodapp.order.external.RestaurantClient;
+import com.foodapp.order.entity.OrderStatus;
+import com.foodapp.order.external.RestaurantMenuClient;
+import com.foodapp.order.external.RestaurantOwnershipClient;
 import com.foodapp.order.external.dto.MenuItemDto;
 import com.foodapp.order.repository.OrderRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +27,37 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final RestaurantClient restaurantClient;
+    private final RestaurantOwnershipClient restaurantOwnershipClient;
+
+    private final RestaurantMenuClient restaurantMenuClient;
+
+    private static final String SECRET =
+            "my-super-secret-key-for-food-delivery-platform-123456";
+
+    private final Key key =
+            Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+
+    // ✅ THIS METHOD MUST BE INSIDE THE CLASS
+    public String extractEmail(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.getSubject();
+    }
 
     @Transactional
-    public Order placeOrder(CreateOrderRequest request, Long userId) {
+    public Order placeOrder(CreateOrderRequest request,
+                            Long userId,
+                            String email) {
 
         Order order = new Order();
         order.setUserId(userId);
+        order.setUserEmail(email);
         order.setRestaurantId(request.getRestaurantId());
-        order.setStatus("CREATED");
+        order.setStatus(OrderStatus.CREATED);
         order.setCreatedAt(LocalDateTime.now());
 
         List<OrderItem> items = new ArrayList<>();
@@ -37,7 +66,7 @@ public class OrderService {
         for (OrderItemRequest itemReq : request.getItems()) {
 
             MenuItemDto menuItem =
-                    restaurantClient.getMenuItem(itemReq.getMenuItemId());
+                    restaurantMenuClient.getMenuItem(itemReq.getMenuItemId());
 
             if (!menuItem.isAvailable()) {
                 throw new RuntimeException("Item not available");
@@ -63,11 +92,53 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public List<Order> getOrdersForUser(Long userId) {
-        return orderRepository.findByUserId(userId);
+    public List<Order> getOrdersForUser(String email) {
+        return orderRepository.findByUserEmail(email);
     }
 
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
+
+    public List<Order> getOrdersForRestaurant(Long restaurantId) {
+        return orderRepository.findByRestaurantId(restaurantId);
+    }
+
+    @Transactional
+    public Order updateOrderStatus(
+            Long orderId,
+            Long ownerId,
+            OrderStatus newStatus
+    ) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        boolean isOwner = restaurantOwnershipClient.isOwnerOfRestaurant(
+                order.getRestaurantId(),
+                ownerId
+        );
+
+        if (!isOwner) {
+            throw new RuntimeException("Not authorized to update this order");
+        }
+
+        validateTransition(order.getStatus(), newStatus);
+
+        order.setStatus(newStatus);
+        return orderRepository.save(order);
+    }
+
+
+    private void validateTransition(OrderStatus current, OrderStatus next) {
+        if (current == OrderStatus.CREATED && next == OrderStatus.ACCEPTED) return;
+        if (current == OrderStatus.ACCEPTED && next == OrderStatus.PREPARING) return;
+        if (current == OrderStatus.PREPARING && next == OrderStatus.READY) return;
+        if (current == OrderStatus.READY && next == OrderStatus.PICKED_UP) return;
+
+        throw new RuntimeException(
+                "Invalid status transition: " + current + " → " + next
+        );
+    }
+
+
 }

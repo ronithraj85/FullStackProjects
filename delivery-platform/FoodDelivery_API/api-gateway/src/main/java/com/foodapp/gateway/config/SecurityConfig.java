@@ -2,6 +2,7 @@ package com.foodapp.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -17,8 +18,12 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
-                .authorizeExchange(ex -> ex.anyExchange().permitAll())
+
+                // 🔥 Gateway does NOT authorize roles
+                .authorizeExchange(ex -> ex
+                        .anyExchange().permitAll()
+                )
+
                 .build();
     }
 }
-

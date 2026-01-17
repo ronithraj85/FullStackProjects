@@ -26,7 +26,10 @@ public class Order {
 
     private Double totalAmount;
 
-    private String status; // CREATED, PAID, CANCELLED
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderStatus status;
+
 
     private LocalDateTime createdAt;
 
@@ -36,4 +39,6 @@ public class Order {
             orphanRemoval = true
     )
     private List<OrderItem> items;
+
+
 }

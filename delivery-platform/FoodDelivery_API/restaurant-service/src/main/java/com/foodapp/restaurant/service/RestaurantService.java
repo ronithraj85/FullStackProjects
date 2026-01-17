@@ -32,7 +32,16 @@ public class RestaurantService {
         return restaurantRepository.findByActiveTrue();
     }
 
+    public boolean isOwnerOfRestaurant(Long restaurantId, Long ownerId) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+
+        return restaurant.getOwnerId().equals(ownerId);
+    }
+
     public List<Restaurant> getRestaurantsForOwner(Long ownerId) {
         return restaurantRepository.findByOwnerId(ownerId);
     }
+
+
 }

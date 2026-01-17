@@ -44,4 +44,12 @@ public class RestaurantController {
         Long ownerId = Long.valueOf(request.getHeader("X-USER-ID"));
         return restaurantService.getRestaurantsForOwner(ownerId);
     }
+    @GetMapping("/internal/restaurants/{restaurantId}/owner/{ownerId}")
+    public boolean isOwner(
+            @PathVariable Long restaurantId,
+            @PathVariable Long ownerId
+    ) {
+        return restaurantService.isOwnerOfRestaurant(restaurantId, ownerId);
+    }
+
 }

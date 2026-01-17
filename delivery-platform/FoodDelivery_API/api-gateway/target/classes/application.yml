@@ -33,3 +33,6 @@ logging:
     org.springframework.security: DEBUG
     org.springframework.cloud.gateway: DEBUG
 
+jwt:
+  secret: my-super-secret-key-for-food-delivery-platform-123456
+

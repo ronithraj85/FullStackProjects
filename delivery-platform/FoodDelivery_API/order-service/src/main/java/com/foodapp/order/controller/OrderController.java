@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/orders")
 @RequiredArgsConstructor
 public class OrderController {
 
@@ -24,20 +24,16 @@ public class OrderController {
             @RequestBody CreateOrderRequest request,
             HttpServletRequest httpRequest
     ) {
-        String userId = httpRequest.getHeader("X-USER-ID");
-        String email = httpRequest.getHeader("X-USER-EMAIL");
-
-        return orderService.placeOrder(
-                request,
-                Long.valueOf(userId),
-                email
-        );
+        Long userId = Long.valueOf(httpRequest.getHeader("X-USER-ID"));
+        return orderService.placeOrder(request, userId);
     }
 
     @GetMapping("/my")
-    public List<Order> myOrders(@AuthenticationPrincipal Jwt jwt) {
-        return orderService.getOrdersForUser(jwt.getSubject());
+    public List<Order> myOrders(HttpServletRequest request) {
+        Long userId = Long.valueOf(request.getHeader("X-USER-ID"));
+        return orderService.getOrdersForUser(userId);
     }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping

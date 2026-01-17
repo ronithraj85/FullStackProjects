@@ -9,7 +9,6 @@ import com.foodapp.order.external.dto.MenuItemDto;
 import com.foodapp.order.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,13 +23,10 @@ public class OrderService {
     private final RestaurantClient restaurantClient;
 
     @Transactional
-    public Order placeOrder(CreateOrderRequest request,
-                            Long userId,
-                            String email) {
+    public Order placeOrder(CreateOrderRequest request, Long userId) {
 
         Order order = new Order();
         order.setUserId(userId);
-        order.setUserEmail(email);
         order.setRestaurantId(request.getRestaurantId());
         order.setStatus("CREATED");
         order.setCreatedAt(LocalDateTime.now());
@@ -67,8 +63,8 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public List<Order> getOrdersForUser(String email) {
-        return orderRepository.findByUserEmail(email);
+    public List<Order> getOrdersForUser(Long userId) {
+        return orderRepository.findByUserId(userId);
     }
 
     public List<Order> getAllOrders() {

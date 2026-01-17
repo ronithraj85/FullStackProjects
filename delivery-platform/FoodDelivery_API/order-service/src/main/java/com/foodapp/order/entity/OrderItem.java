@@ -5,7 +5,8 @@ import lombok.*;
 
 @Entity
 @Table(name = "order_items")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderItem {
@@ -14,13 +15,13 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long foodItemId;
+    @Column(name = "menu_item_id", nullable = false)
+    private Long menuItemId;
 
     private Integer quantity;
-
     private Double price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 }

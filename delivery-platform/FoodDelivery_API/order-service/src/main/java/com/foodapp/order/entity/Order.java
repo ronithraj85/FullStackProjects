@@ -8,7 +8,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
@@ -18,6 +19,10 @@ public class Order {
     private Long id;
 
     private Long userId;
+    private String userEmail;
+
+    @Column(name = "restaurant_id", nullable = false)
+    private Long restaurantId;
 
     private Double totalAmount;
 
@@ -25,9 +30,10 @@ public class Order {
 
     private LocalDateTime createdAt;
 
-    private String userEmail;
-
-
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "order",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<OrderItem> items;
 }

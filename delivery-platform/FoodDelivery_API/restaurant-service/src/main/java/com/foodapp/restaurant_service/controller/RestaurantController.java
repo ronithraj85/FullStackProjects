@@ -1,32 +1,29 @@
 package com.foodapp.restaurant_service.controller;
 
+import com.foodapp.restaurant_service.dto.RestaurantRequest;
 import com.foodapp.restaurant_service.entity.Restaurant;
 import com.foodapp.restaurant_service.service.RestaurantService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/restaurants")
+@RequestMapping("/api/restaurants")
 @RequiredArgsConstructor
 public class RestaurantController {
 
     private final RestaurantService service;
 
     // PUBLIC
-//    @GetMapping
-//    public List<Restaurant> all() {
-//        return service.getAll();
-//    }
-
     @GetMapping
-    public List<Restaurant> getAllRestaurants() {
-        return List.of(
-                new Restaurant(1L, "Pizza Palace", "Italian", 4.5),
-                new Restaurant(2L, "Burger Hub", "Fast Food", 4.2)
-        );
+    public List<Restaurant> all() {
+        return service.getAll();
     }
 
     // PUBLIC
@@ -35,11 +32,31 @@ public class RestaurantController {
         return service.getById(id);
     }
 
-    // ADMIN / OWNER
-    @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
+    // OWNER / ADMIN
     @PostMapping
-    public Restaurant create(@RequestBody Restaurant restaurant) {
-        return service.create(restaurant);
-    }
-}
+    @PreAuthorize("hasAnyRole('OWNER','ADMIN')")
+    public Restaurant create(
+            @RequestBody RestaurantRequest request,
+            HttpServletRequest httpRequest
+    ) {
+        Long ownerId =
+                Long.valueOf(httpRequest.getHeader("X-USER-ID"));
 
+        return service.create(request, ownerId);
+    }
+
+
+    @PatchMapping("/{id}/open")
+    @PreAuthorize("hasRole('OWNER')")
+    public Restaurant open(
+            @PathVariable Long id,
+            HttpServletRequest httpRequest
+    ) {
+        Long ownerId =
+                Long.valueOf(httpRequest.getHeader("X-USER-ID"));
+
+        return service.openRestaurant(id, ownerId);
+    }
+
+
+}

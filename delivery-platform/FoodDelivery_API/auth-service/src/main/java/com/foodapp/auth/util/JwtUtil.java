@@ -22,28 +22,20 @@ public class JwtUtil {
 
     private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
-    public String generateToken(String username, String role) {
+    public String generateToken(Long userId, String email, String role) {
 
         return Jwts.builder()
                 .setClaims(Map.of(
-                        "authorities", List.of(role)   // ✅ REQUIRED BY GATEWAY
+                        "authorities", List.of(role), // REQUIRED by gateway
+                        "userId", userId               // 🔥 NEW
                 ))
-                .setSubject(username)
+                .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(
                         new Date(System.currentTimeMillis() + EXPIRATION_TIME)
                 )
                 .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
-    }
-
-
-    public String extractUsername(String token) {
-        return getClaims(token).getSubject();
-    }
-
-    public String extractRole(String token) {
-        return getClaims(token).get("role", String.class);
     }
 
     public boolean isTokenValid(String token) {

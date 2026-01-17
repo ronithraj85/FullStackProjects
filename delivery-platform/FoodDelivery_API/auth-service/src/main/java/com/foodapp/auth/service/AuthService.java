@@ -64,9 +64,11 @@ public class AuthService {
                 .toList();
 
         String token = jwtUtil.generateToken(
+                user.getId(),          // 🔥 userId added
                 user.getEmail(),
-                roles.get(0) // or modify JWT to accept list
+                roles.get(0)
         );
+
 
         return new AuthResult(
                 token,

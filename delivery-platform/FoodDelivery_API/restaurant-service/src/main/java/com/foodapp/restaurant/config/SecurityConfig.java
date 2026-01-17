@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${security.internal.secret}")
+    @Value("${internal.jwt.secret}")
     private String internalSecret;
 
 

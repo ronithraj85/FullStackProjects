@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext(null);
 
@@ -8,21 +7,28 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setUser(jwtDecode(token));
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
   }, []);
 
-  const login = (token) => {
+  const login = ({ token, user }) => {
+    // token = JWT
+    // user = { id, email, role }
+
     localStorage.setItem("token", token);
-    setUser(jwtDecode(token));
+    localStorage.setItem("user", JSON.stringify(user));
+
+    setUser(user);
     toast.success("Login successful");
   };
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setUser(null);
+
     toast.success("Logged out");
     window.location.href = "/auth";
   };

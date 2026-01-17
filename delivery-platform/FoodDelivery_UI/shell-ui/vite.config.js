@@ -9,6 +9,9 @@ export default defineConfig({
   build: {
     target: "esnext", // 🔥 REQUIRED
   },
+  exposes: {
+    "./api": "./src/api/axios.js",
+  },
   plugins: [
     federation({
       name: "shell",

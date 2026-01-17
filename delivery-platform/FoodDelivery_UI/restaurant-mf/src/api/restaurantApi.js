@@ -1,4 +1,3 @@
-import axios from "axios";
+import api from "../../../shell-ui/src/api/axios";
 
-export const getRestaurants = () =>
-  axios.get("http://localhost:8585/api/restaurants");
+export const getRestaurants = () => api.get("/restaurants");

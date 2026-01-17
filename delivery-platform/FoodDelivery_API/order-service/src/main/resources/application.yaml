@@ -24,6 +24,9 @@ security:
       jwt:
         secret-key: my-super-secret-key-for-food-delivery-platform-123456
 
+restaurant:
+  service:
+    url: http://localhost:8787
 
 internal:
   jwt:

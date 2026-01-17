@@ -5,8 +5,7 @@ import com.foodapp.order.dto.OrderItemRequest;
 import com.foodapp.order.entity.Order;
 import com.foodapp.order.entity.OrderItem;
 import com.foodapp.order.entity.OrderStatus;
-import com.foodapp.order.external.RestaurantMenuClient;
-import com.foodapp.order.external.RestaurantOwnershipClient;
+import com.foodapp.order.external.RestaurantServiceClient;
 import com.foodapp.order.external.dto.MenuItemDto;
 import com.foodapp.order.repository.OrderRepository;
 import com.foodapp.order.security.InternalJwtUtil;
@@ -28,10 +27,9 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final RestaurantOwnershipClient restaurantOwnershipClient;
+    private final RestaurantServiceClient restaurantServiceClient;
     private final InternalJwtUtil internalJwtUtil;
 
-    private final RestaurantMenuClient restaurantMenuClient;
 
     private static final String SECRET =
             "my-super-secret-key-for-food-delivery-platform-123456";
@@ -68,7 +66,7 @@ public class OrderService {
         for (OrderItemRequest itemReq : request.getItems()) {
 
             MenuItemDto menuItem =
-                    restaurantMenuClient.getMenuItem(itemReq.getMenuItemId());
+                    restaurantServiceClient.getMenuItem(itemReq.getMenuItemId());
 
             if (!menuItem.isAvailable()) {
                 throw new RuntimeException("Item not available");
@@ -142,7 +140,7 @@ public class OrderService {
                 "Bearer " + internalJwtUtil.generateInternalToken();
 
         boolean isOwner =
-                restaurantOwnershipClient.isOwnerOfRestaurant(
+                restaurantServiceClient.isOwnerOfRestaurant(
                         restaurantId,
                         ownerId,
                         internalToken

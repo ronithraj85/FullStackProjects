@@ -9,6 +9,7 @@ import com.foodapp.order.external.RestaurantMenuClient;
 import com.foodapp.order.external.RestaurantOwnershipClient;
 import com.foodapp.order.external.dto.MenuItemDto;
 import com.foodapp.order.repository.OrderRepository;
+import com.foodapp.order.security.InternalJwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -28,6 +29,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final RestaurantOwnershipClient restaurantOwnershipClient;
+    private final InternalJwtUtil internalJwtUtil;
 
     private final RestaurantMenuClient restaurantMenuClient;
 
@@ -114,15 +116,10 @@ public class OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
-        // 🔐 INTERNAL OWNERSHIP CHECK
-        boolean isOwner = restaurantOwnershipClient.isOwnerOfRestaurant(
-                order.getRestaurantId(),
-                ownerId
-        );
+        // ✅ INTERNAL SERVICE-TO-SERVICE SECURITY
+        validateRestaurantOwnership(order.getRestaurantId(), ownerId);
 
-        if (!isOwner) {
-            throw new RuntimeException("Not authorized for this restaurant");
-        }
+        validateTransition(order.getStatus(), newStatus);
 
         order.setStatus(newStatus);
         return orderRepository.save(order);
@@ -139,5 +136,20 @@ public class OrderService {
         );
     }
 
+    public void validateRestaurantOwnership(Long restaurantId, Long ownerId) {
 
+        String internalToken =
+                "Bearer " + internalJwtUtil.generateInternalToken();
+
+        boolean isOwner =
+                restaurantOwnershipClient.isOwnerOfRestaurant(
+                        restaurantId,
+                        ownerId,
+                        internalToken
+                );
+
+        if (!isOwner) {
+            throw new RuntimeException("Not restaurant owner");
+        }
+    }
 }

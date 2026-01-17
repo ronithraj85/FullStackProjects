@@ -25,3 +25,6 @@ security:
         secret-key: my-super-secret-key-for-food-delivery-platform-123456
 
 
+internal:
+  jwt:
+    secret: INTERNAL_SECRET_KEY_32_CHARS_MIN

@@ -1,6 +1,7 @@
 package com.foodapp.gateway.filter;
 
 import com.foodapp.gateway.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.core.Ordered;
@@ -17,6 +18,9 @@ import java.util.UUID;
 public class JwtAuthFilter implements GlobalFilter, Ordered {
 
     private final JwtUtil jwtUtil;
+
+    @Value("${internal.jwt.secret}")
+    private String internalSecret;
 
     public JwtAuthFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;

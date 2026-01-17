@@ -2,6 +2,7 @@ package com.foodapp.restaurant.controller;
 
 import com.foodapp.restaurant.entity.Restaurant;
 import com.foodapp.restaurant.repository.RestaurantRepository;
+import com.foodapp.restaurant.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,16 +11,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class InternalRestaurantController {
 
-    private final RestaurantRepository restaurantRepository;
+    private final RestaurantService restaurantService;
 
     @GetMapping("/{restaurantId}/owner/{ownerId}")
     public boolean isOwner(
             @PathVariable Long restaurantId,
             @PathVariable Long ownerId
     ) {
-        Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
-
-        return restaurant.getOwnerId().equals(ownerId);
+        return restaurantService.isOwnerOfRestaurant(restaurantId, ownerId);
     }
 }

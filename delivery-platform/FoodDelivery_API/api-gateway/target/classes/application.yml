@@ -36,3 +36,6 @@ logging:
 jwt:
   secret: my-super-secret-key-for-food-delivery-platform-123456
 
+internal:
+  secret: FOODAPP_INTERNAL_2026
+

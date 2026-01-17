@@ -18,3 +18,6 @@ spring:
       hibernate:
         format_sql: true
 
+internal:
+  jwt:
+    secret: INTERNAL_SECRET_KEY_32_CHARS_MIN

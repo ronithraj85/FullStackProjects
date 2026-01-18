@@ -7,4 +7,3 @@ public class OrderItemRequest {
     private Long menuItemId;
     private Integer quantity;
 }
-

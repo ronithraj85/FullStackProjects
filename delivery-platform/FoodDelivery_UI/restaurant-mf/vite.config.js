@@ -7,7 +7,7 @@ export default defineConfig({
     port: 3004,
   },
   build: {
-    target: "esnext", // 🔥 REQUIRED FOR MODULE FEDERATION
+    target: "esnext",
   },
   plugins: [
     federation({
@@ -15,10 +15,13 @@ export default defineConfig({
       filename: "remoteEntry.js",
       exposes: {
         "./App": "./src/App.jsx",
+        "./Restaurants": "./src/pages/Restaurants.jsx",
+        "./RestaurantDetails": "./src/pages/RestaurantDetails.jsx",
       },
       shared: {
         react: { singleton: true, requiredVersion: "18.2.0" },
         "react-dom": { singleton: true, requiredVersion: "18.2.0" },
+        "react-router-dom": { singleton: true }, // 🔥 REQUIRED
       },
     }),
     react(),

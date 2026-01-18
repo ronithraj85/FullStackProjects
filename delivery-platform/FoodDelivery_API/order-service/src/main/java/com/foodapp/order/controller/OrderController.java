@@ -63,8 +63,8 @@ public class OrderController {
     }
 
     // OWNER → UPDATE STATUS
-    @PutMapping("/{orderId}/status")
-    public Order updateOrderStatus(
+    @PutMapping("/restaurant/{orderId}/status")
+    public Order updateOrderStatusByOwner(
             @PathVariable("orderId") Long orderId,
             @RequestParam("status") OrderStatus status,
             @RequestHeader("X-USER-ID") Long ownerId,

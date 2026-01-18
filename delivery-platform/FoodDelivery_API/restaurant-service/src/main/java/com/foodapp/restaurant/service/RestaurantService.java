@@ -45,5 +45,10 @@ public class RestaurantService {
                 .orElseThrow(() -> new RuntimeException("Restaurant not found for owner"));
     }
 
+    public Restaurant getById(Long id) {
+        return restaurantRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+    }
+
 
 }

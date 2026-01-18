@@ -8,7 +8,10 @@ import Auth from "./pages/Auth";
 import { isAuthenticated, getRole } from "./utils/auth";
 
 // MFEs
-const RestaurantApp = React.lazy(() => import("restaurant/App"));
+const Restaurants = React.lazy(() => import("restaurant/Restaurants"));
+const RestaurantDetails = React.lazy(
+  () => import("restaurant/RestaurantDetails"),
+);
 const OrderApp = React.lazy(() => import("order/App"));
 
 export default function App() {
@@ -48,7 +51,8 @@ export default function App() {
             )}
 
             {/* RESTAURANT MFE */}
-            <Route path="restaurants/*" element={<RestaurantApp />} />
+            <Route path="restaurants" element={<Restaurants />} />
+            <Route path="restaurants/:id" element={<RestaurantDetails />} />
           </Route>
         </Routes>
       </Suspense>

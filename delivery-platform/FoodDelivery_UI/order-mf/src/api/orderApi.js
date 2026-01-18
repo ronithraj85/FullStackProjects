@@ -15,3 +15,4 @@ export const updateOrderStatus = (orderId, status) =>
   });
 
 export const fetchMyRestaurant = () => api.get("/restaurants/owner/me");
+export const placeOrder = (orderRequest) => api.post("/orders", orderRequest);

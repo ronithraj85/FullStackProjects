@@ -5,6 +5,7 @@ import com.foodapp.restaurant.entity.Restaurant;
 import com.foodapp.restaurant.service.RestaurantService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,9 @@ import java.util.List;
 @RequestMapping("/restaurants")
 @RequiredArgsConstructor
 public class RestaurantController {
+
+    @Value("${internal.jwt.secret}")
+    private String internalToken;
 
     private final RestaurantService restaurantService;
 
@@ -44,13 +48,18 @@ public class RestaurantController {
         Long ownerId = Long.valueOf(request.getHeader("X-USER-ID"));
         return restaurantService.getRestaurantsForOwner(ownerId);
     }*/
-    @GetMapping("/internal/restaurants/{restaurantId}/owner/{ownerId}")
-    public boolean isOwner(
-            @PathVariable("restaurantId") Long restaurantId,
-            @PathVariable("ownerId") Long ownerId
-    ) {
-        return restaurantService.isOwnerOfRestaurant(restaurantId, ownerId);
-    }
+ @GetMapping("/internal/restaurants/{restaurantId}/owner/{ownerId}")
+ public boolean isOwnerOfRestaurant(
+         @PathVariable("restaurantId") Long restaurantId,
+         @PathVariable("ownerId") Long ownerId,
+         @RequestHeader("Authorization") String authHeader
+ ) {
+     if (!("Bearer " + internalToken).equals(authHeader)) {
+         throw new RuntimeException("Unauthorized internal call");
+     }
+
+     return restaurantService.isOwnerOfRestaurant(restaurantId, ownerId);
+ }
 
     @GetMapping("/owner/me")
     public Restaurant getMyRestaurant(
@@ -65,6 +74,13 @@ public class RestaurantController {
         }
 
         return restaurantService.getRestaurantByOwner(ownerId);
+    }
+
+    @GetMapping("/{restaurantId}")
+    public Restaurant getRestaurantById(
+            @PathVariable("restaurantId") Long restaurantId
+    ) {
+        return restaurantService.getById(restaurantId);
     }
 
 

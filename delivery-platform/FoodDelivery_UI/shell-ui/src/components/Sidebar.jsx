@@ -2,7 +2,6 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { getRole, hasRole } from "../utils/auth";
 
 export default function Sidebar() {
-  const isAdmin = hasRole("ROLE_ADMIN");
   const role = getRole();
   const location = useLocation();
 
@@ -23,14 +22,14 @@ export default function Sidebar() {
       {/* NAV */}
       <nav className="p-4 space-y-2">
         {/* DASHBOARD */}
-        <Link to="/" className={linkClass("/")}>
+        <NavLink to="/" className={linkClass("/")}>
           📊 Dashboard
-        </Link>
+        </NavLink>
 
         {/* RESTAURANTS */}
-        <Link to="/restaurants" className={linkClass("/restaurants")}>
+        <NavLink to="/restaurants" className={linkClass("/restaurants")}>
           🍔 Restaurants
-        </Link>
+        </NavLink>
 
         {/* USER */}
         {role === "ROLE_USER" && (
@@ -45,13 +44,36 @@ export default function Sidebar() {
             🧾 Restaurant Orders
           </NavLink>
         )}
+        {/* OWNER ONLY */}
+        {role === "ROLE_OWNER" && (
+          <>
+            <NavLink
+              to="/owner/dashboard"
+              className={linkClass("/owner/dashboard")}
+            >
+              My Restaurants
+            </NavLink>
+
+            <NavLink
+              to="/owner/add-restaurant"
+              className={linkClass("/owner/add-restaurant")}
+            >
+              Add Restaurant
+            </NavLink>
+          </>
+        )}
+        {role === "ROLE_ADMIN" && (
+          <NavLink to="/admin/restaurants" className="sidebar-link">
+            Restaurant Approvals
+          </NavLink>
+        )}
 
         {/* ADMIN */}
-        {isAdmin && (
-          <Link to="/admin" className={linkClass("/admin")}>
+        {/* {isAdmin && (
+          <NavLink to="/admin" className={linkClass("/admin")}>
             🛠 Admin Panel
-          </Link>
-        )}
+          </NavLink>
+        )} */}
       </nav>
     </aside>
   );

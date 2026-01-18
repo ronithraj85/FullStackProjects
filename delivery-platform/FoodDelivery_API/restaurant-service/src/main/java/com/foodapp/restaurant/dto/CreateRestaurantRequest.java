@@ -1,10 +1,11 @@
 package com.foodapp.restaurant.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter @Setter
 public class CreateRestaurantRequest {
     private String name;
     private String city;
-    private String address;
+    private String cuisine;
+    private String imageUrl;
 }

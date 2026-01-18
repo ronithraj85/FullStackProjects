@@ -8,6 +8,7 @@ export default function Restaurants() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("Inside Restaurants page");
     getRestaurants().then((res) => setRestaurants(res.data));
   }, []);
 

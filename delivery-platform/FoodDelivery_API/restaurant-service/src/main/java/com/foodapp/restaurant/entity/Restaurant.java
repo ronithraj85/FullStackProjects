@@ -1,14 +1,12 @@
 package com.foodapp.restaurant.entity;
 
+import com.foodapp.restaurant.enums.RestaurantStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @Table(name = "restaurants")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter
 public class Restaurant {
 
     @Id
@@ -16,13 +14,12 @@ public class Restaurant {
     private Long id;
 
     private String name;
-
     private String city;
+    private String cuisine;
+    private String imageUrl;
 
-    private String address;
+    private Long ownerId;   // 🔥 from JWT
 
-    @Column(nullable = false)
-    private Long ownerId;   // 🔥 from gateway header
-
-    private boolean active = true;
+    @Enumerated(EnumType.STRING)
+    private RestaurantStatus status = RestaurantStatus.PENDING;
 }

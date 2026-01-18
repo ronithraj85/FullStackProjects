@@ -1,11 +1,15 @@
 package com.foodapp.restaurant.controller;
 
 import com.foodapp.restaurant.dto.CreateRestaurantRequest;
+import com.foodapp.restaurant.dto.RestaurantStatusRequest;
 import com.foodapp.restaurant.entity.Restaurant;
 import com.foodapp.restaurant.service.RestaurantService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,10 +24,9 @@ public class RestaurantController {
 
     private final RestaurantService restaurantService;
 
-    // 🔓 Public – users can browse
     @GetMapping
-    public List<Restaurant> getRestaurants() {
-        return restaurantService.getAllActiveRestaurants();
+    public List<Restaurant> getAllRestaurants() {
+        return restaurantService.getActiveRestaurants();
     }
 
     // 🔒 OWNER / ADMIN only
@@ -61,26 +64,46 @@ public class RestaurantController {
      return restaurantService.isOwnerOfRestaurant(restaurantId, ownerId);
  }
 
-    @GetMapping("/owner/me")
-    public Restaurant getMyRestaurant(
-            @RequestHeader("X-USER-ID") Long ownerId,
-            @RequestHeader("X-USER-ROLE") String role
+    @GetMapping("/owner")
+    @PreAuthorize("hasRole('OWNER')")
+    public List<Restaurant> getOwnerRestaurants(
+            @RequestHeader("X-USER-ID") Long ownerId
     ) {
-        System.out.println("ROLE HEADER = " + role);
-        System.out.println("OWNER ID = " + ownerId);
-
-        if (!"ROLE_OWNER".equals(role)) {
-            throw new RuntimeException("Only owners allowed");
-        }
-
-        return restaurantService.getRestaurantByOwner(ownerId);
+        return restaurantService.getOwnerRestaurants(ownerId);
     }
+
 
     @GetMapping("/{restaurantId}")
     public Restaurant getRestaurantById(
             @PathVariable("restaurantId") Long restaurantId
     ) {
         return restaurantService.getById(restaurantId);
+    }
+
+    // ADMIN – list pending restaurants
+    @GetMapping("/admin/pending")
+    public List<Restaurant> getPendingRestaurants(
+            @RequestHeader("X-USER-ROLE") String role
+    ) {
+        if (!"ROLE_ADMIN".equals(role)) {
+            throw new RuntimeException("Only admin allowed");
+        }
+
+        return restaurantService.getPendingRestaurants();
+    }
+
+    // ADMIN – approve / reject restaurant
+    @PutMapping("/admin/{id}/status")
+    public void updateRestaurantStatus(
+            @PathVariable("id") Long id,
+            @RequestBody RestaurantStatusRequest request,
+            @RequestHeader("X-USER-ROLE") String role
+    ) {
+        if (!"ROLE_ADMIN".equals(role)) {
+            throw new RuntimeException("Only admin allowed");
+        }
+
+        restaurantService.updateRestaurantStatus(id, request.getStatus());
     }
 
 

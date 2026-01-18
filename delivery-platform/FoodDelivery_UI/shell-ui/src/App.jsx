@@ -12,7 +12,16 @@ const Restaurants = React.lazy(() => import("restaurant/Restaurants"));
 const RestaurantDetails = React.lazy(
   () => import("restaurant/RestaurantDetails"),
 );
+const Cart = React.lazy(() => import("restaurant/Cart"));
+
 const OrderApp = React.lazy(() => import("order/App"));
+const OwnerDashboard = React.lazy(() => import("restaurant/OwnerDashboard"));
+const AddRestaurant = React.lazy(() => import("restaurant/AddRestaurant"));
+const ManageMenu = React.lazy(() => import("restaurant/ManageMenu"));
+const AddMenuItem = React.lazy(() => import("restaurant/AddMenuItem"));
+const RestaurantApprovals = React.lazy(
+  () => import("./pages/admin/RestaurantApprovals"),
+);
 
 export default function App() {
   const role = getRole();
@@ -49,10 +58,32 @@ export default function App() {
             {role === "ROLE_OWNER" && (
               <Route path="owner/orders" element={<OrderApp />} />
             )}
+            {/* OWNER ROUTES */}
+            {role === "ROLE_OWNER" && (
+              <>
+                <Route path="owner/dashboard" element={<OwnerDashboard />} />
+                <Route
+                  path="owner/add-restaurant"
+                  element={<AddRestaurant />}
+                />
+                <Route path="owner/restaurants/:id" element={<ManageMenu />} />
+                <Route
+                  path="owner/restaurants/:id/add-item"
+                  element={<AddMenuItem />}
+                />
+              </>
+            )}
+            {role === "ROLE_ADMIN" && (
+              <Route
+                path="admin/restaurants"
+                element={<RestaurantApprovals />}
+              />
+            )}
 
             {/* RESTAURANT MFE */}
             <Route path="restaurants" element={<Restaurants />} />
             <Route path="restaurants/:id" element={<RestaurantDetails />} />
+            <Route path="/restaurants/:id/cart" element={<Cart />} />
           </Route>
         </Routes>
       </Suspense>

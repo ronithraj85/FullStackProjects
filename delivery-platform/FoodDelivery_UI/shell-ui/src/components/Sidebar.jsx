@@ -1,8 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
-import { hasRole } from "../utils/auth";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { getRole, hasRole } from "../utils/auth";
 
 export default function Sidebar() {
   const isAdmin = hasRole("ROLE_ADMIN");
+  const role = getRole();
   const location = useLocation();
 
   const linkClass = (path) =>
@@ -26,15 +27,24 @@ export default function Sidebar() {
           📊 Dashboard
         </Link>
 
-        {/* RESTAURANTS (restaurant-mf) */}
+        {/* RESTAURANTS */}
         <Link to="/restaurants" className={linkClass("/restaurants")}>
           🍔 Restaurants
         </Link>
 
-        {/* ORDERS */}
-        <Link to="/orders" className={linkClass("/orders")}>
-          📦 {isAdmin ? "All Orders" : "My Orders"}
-        </Link>
+        {/* USER */}
+        {role === "ROLE_USER" && (
+          <NavLink to="/orders" className={linkClass("/orders")}>
+            📦 My Orders
+          </NavLink>
+        )}
+
+        {/* OWNER */}
+        {role === "ROLE_OWNER" && (
+          <NavLink to="/owner/orders" className={linkClass("/owner/orders")}>
+            🧾 Restaurant Orders
+          </NavLink>
+        )}
 
         {/* ADMIN */}
         {isAdmin && (

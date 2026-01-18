@@ -15,6 +15,7 @@ export default defineConfig({
       filename: "remoteEntry.js",
       exposes: {
         "./App": "./src/App.jsx",
+        "./OwnerOrders": "./src/pages/OwnerOrders.jsx",
       },
       shared: {
         react: { singleton: true, requiredVersion: "18.2.0" },

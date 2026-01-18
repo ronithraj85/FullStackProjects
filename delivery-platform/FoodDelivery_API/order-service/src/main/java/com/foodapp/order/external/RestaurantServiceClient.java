@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.util.List;
+
 @FeignClient(
         name = "restaurant-service",
         url = "${restaurant.service.url}"
@@ -13,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface RestaurantServiceClient {
 
     // 🔹 Menu APIs
-    @GetMapping("/api/menu/item/{menuItemId}")
-    MenuItemDto getMenuItem(
-            @PathVariable("menuItemId") Long menuItemId
+    @GetMapping("/api/restaurants/{restaurantId}/menu")
+    List<MenuItemDto> getMenuForRestaurant(
+            @PathVariable("restaurantId") Long restaurantId
     );
 
     // 🔐 Internal ownership check

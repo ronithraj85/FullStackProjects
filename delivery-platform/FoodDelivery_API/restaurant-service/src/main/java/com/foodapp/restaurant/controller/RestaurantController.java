@@ -38,18 +38,34 @@ public class RestaurantController {
         return restaurantService.createRestaurant(request, ownerId);
     }
 
-    // 🔒 OWNER – see own restaurants
+ /*   // 🔒 OWNER – see own restaurants
     @GetMapping("/my")
     public List<Restaurant> myRestaurants(HttpServletRequest request) {
         Long ownerId = Long.valueOf(request.getHeader("X-USER-ID"));
         return restaurantService.getRestaurantsForOwner(ownerId);
-    }
+    }*/
     @GetMapping("/internal/restaurants/{restaurantId}/owner/{ownerId}")
     public boolean isOwner(
-            @PathVariable Long restaurantId,
-            @PathVariable Long ownerId
+            @PathVariable("restaurantId") Long restaurantId,
+            @PathVariable("ownerId") Long ownerId
     ) {
         return restaurantService.isOwnerOfRestaurant(restaurantId, ownerId);
     }
+
+    @GetMapping("/owner/me")
+    public Restaurant getMyRestaurant(
+            @RequestHeader("X-USER-ID") Long ownerId,
+            @RequestHeader("X-USER-ROLE") String role
+    ) {
+        System.out.println("ROLE HEADER = " + role);
+        System.out.println("OWNER ID = " + ownerId);
+
+        if (!"ROLE_OWNER".equals(role)) {
+            throw new RuntimeException("Only owners allowed");
+        }
+
+        return restaurantService.getRestaurantByOwner(ownerId);
+    }
+
 
 }

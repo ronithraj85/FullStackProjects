@@ -1,9 +1,12 @@
 package com.foodapp.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,25 +15,28 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Long userId;
+
+    @Column(nullable = false)
     private String userEmail;
 
-    @Column(name = "restaurant_id", nullable = false)
+    @Column(nullable = false)
     private Long restaurantId;
-
-    private Double totalAmount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
 
-
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @OneToMany(
@@ -38,7 +44,5 @@ public class Order {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<OrderItem> items;
-
-
+    private List<OrderItem> items = new ArrayList<>();
 }

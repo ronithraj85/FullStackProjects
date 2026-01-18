@@ -26,7 +26,7 @@ security:
 
 restaurant:
   service:
-    url: http://localhost:8787
+    url: http://localhost:8585
 
 internal:
   jwt:

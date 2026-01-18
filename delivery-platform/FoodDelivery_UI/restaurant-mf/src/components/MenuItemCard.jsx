@@ -1,9 +1,18 @@
 export default function MenuItemCard({ item, onAdd }) {
   return (
-    <div className="flex justify-between bg-white rounded-xl p-4 shadow hover:shadow-md transition">
-      {/* LEFT — INFO */}
+    <div
+      className="flex justify-between 
+                    bg-white rounded-xl p-4 
+                    shadow-sm hover:shadow-md 
+                    transition"
+    >
+      {/* LEFT */}
       <div className="flex flex-col gap-1 pr-4">
-        <span className="text-xs text-red-500 font-semibold">★ Bestseller</span>
+        {item.isBestseller && (
+          <span className="text-xs text-red-500 font-semibold">
+            ★ Bestseller
+          </span>
+        )}
 
         <h3 className="font-semibold text-lg">{item.name}</h3>
 
@@ -12,10 +21,10 @@ export default function MenuItemCard({ item, onAdd }) {
         <p className="text-sm text-gray-400">★ {item.rating || 4.2}</p>
       </div>
 
-      {/* RIGHT — IMAGE + ADD */}
+      {/* RIGHT */}
       <div className="relative w-32 h-28 flex-shrink-0">
         <img
-          src={item.imageUrl}
+          src={item.imageUrl || "https://via.placeholder.com/200"}
           alt={item.name}
           className="w-full h-full object-cover rounded-lg"
         />

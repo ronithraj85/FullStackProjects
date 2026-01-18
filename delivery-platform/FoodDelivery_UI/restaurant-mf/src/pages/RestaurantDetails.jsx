@@ -31,13 +31,15 @@ export default function RestaurantDetails() {
   if (!restaurant) return null;
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-1">{restaurant.name}</h1>
-      <p className="text-gray-500 mb-6">
-        ⭐ {restaurant.rating} • {restaurant.city}
-      </p>
+    <div className="max-w-6xl mx-auto p-6">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold">{restaurant.name}</h1>
+        <p className="text-sm text-gray-500 mt-1">
+          ⭐ {restaurant.rating || 4.2} • {restaurant.city}
+        </p>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {menu.map((item) => (
           <MenuItemCard
             key={item.id}
@@ -56,7 +58,7 @@ export default function RestaurantDetails() {
           }
           className="fixed bottom-6 right-6 bg-black text-white px-6 py-3 rounded-full shadow-lg"
         >
-          View Cart ({cart.length})
+          View Cart ({cart.length}) items
         </button>
       )}
     </div>

@@ -5,8 +5,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/student")
@@ -14,7 +16,8 @@ public class StudentController {
 
     List<Student> studentList = new ArrayList<>(List.of(new Student(1,"Raj","Java"),
             new Student(2,"Ronith","SpringAI"),
-            new Student(3,"Kopperla","SpringBoot")
+            new Student(3,"Kopperla","SpringBoot"),
+			new Student(4,"Rajesh","SpringBoot")
             ));
 
     @GetMapping("/get-students")

@@ -1,0 +1,13 @@
+{
+  "name": "makemytrip-mfe-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently --kill-others-on-fail -n HEADER,SEARCH,FLIGHTS,HOTELS,OFFERS,SHELL -c \"blue,red,yellow,green,magenta,cyan\" \"npm run start --prefix mfe-header\" \"npm run start --prefix mfe-search\" \"npm run start --prefix mfe-flights\" \"npm run start --prefix mfe-hotels\" \"npm run start --prefix mfe-offers\" \"npm run start --prefix shell-app\"",
+    "build": "concurrently \"npm run build --prefix mfe-header\" \"npm run build --prefix mfe-search\" \"npm run build --prefix mfe-flights\" \"npm run build --prefix mfe-hotels\" \"npm run build --prefix mfe-offers\" \"npm run build --prefix shell-app\"",
+    "install:all": "npm install && npm install --prefix mfe-header && npm install --prefix mfe-search && npm install --prefix mfe-flights && npm install --prefix mfe-hotels && npm install --prefix mfe-offers && npm install --prefix shell-app"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
